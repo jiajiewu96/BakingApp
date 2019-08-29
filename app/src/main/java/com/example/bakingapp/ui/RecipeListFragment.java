@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
 
-public class RecipeFragmentList extends Fragment {
-    public RecipeFragmentList(){
+public class RecipeListFragment extends Fragment {
+    public RecipeListFragment(){
 
     }
 
