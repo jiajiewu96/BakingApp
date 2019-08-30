@@ -9,8 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.model.Recipe;
+
+import java.util.ArrayList;
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder> {
+
+    private ArrayList<Recipe> recipes;
+
+    public void setRecipes(ArrayList<Recipe> recipes){
+        this.recipes = recipes;
+        notifyDataSetChanged();
+    }
 
     public RecipeListAdapter(){
 
