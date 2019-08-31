@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface RecipeListService {
-    @GET
+    @GET("topher/2017/May/59121517_baking/baking.json/")
     Call<RecipeResponse> getRecipeResponse();
 }

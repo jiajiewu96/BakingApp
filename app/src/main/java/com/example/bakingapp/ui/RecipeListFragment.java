@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import retrofit2.Response;
 public class RecipeListFragment extends Fragment {
 
     private RecipeListAdapter mRecipeListAdapter;
+    private TextView errorTextView;
 
     public RecipeListFragment(){
 
@@ -37,7 +39,7 @@ public class RecipeListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         RecyclerView recipeListRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_view_recipe_list);
-
+        errorTextView = rootView.findViewById(R.id.tv_error);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recipeListRecycler.setLayoutManager(layoutManager);
 
@@ -58,6 +60,7 @@ public class RecipeListFragment extends Fragment {
             @Override
             public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
                 if(!response.isSuccessful()){
+                    showError();
                     return;
                 }
                 ArrayList<Recipe> recipes;
@@ -69,8 +72,12 @@ public class RecipeListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<RecipeResponse> call, Throwable t) {
-
+                showError();
             }
         });
+    }
+
+    private void showError() {
+        errorTextView.setText(getString(R.string.error_message));
     }
 }
