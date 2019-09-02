@@ -3,14 +3,14 @@ package com.example.bakingapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Steps implements Parcelable {
+public class Step implements Parcelable {
     private int id;
     private String shortDescription;
     private String description;
     private String videoURL;
     private String thumbnailURL;
 
-    public Steps(int id, String shortDescription, String description, String videoURL, String thumbnailURL){
+    public Step(int id, String shortDescription, String description, String videoURL, String thumbnailURL){
         this.id = id;
         this.shortDescription = shortDescription;
         this.description = description;
@@ -18,7 +18,7 @@ public class Steps implements Parcelable {
         this.thumbnailURL = thumbnailURL;
     }
 
-    protected Steps(Parcel in) {
+    protected Step(Parcel in) {
         id = in.readInt();
         shortDescription = in.readString();
         description = in.readString();
@@ -26,15 +26,15 @@ public class Steps implements Parcelable {
         thumbnailURL = in.readString();
     }
 
-    public static final Creator<Steps> CREATOR = new Creator<Steps>() {
+    public static final Creator<Step> CREATOR = new Creator<Step>() {
         @Override
-        public Steps createFromParcel(Parcel in) {
-            return new Steps(in);
+        public Step createFromParcel(Parcel in) {
+            return new Step(in);
         }
 
         @Override
-        public Steps[] newArray(int size) {
-            return new Steps[size];
+        public Step[] newArray(int size) {
+            return new Step[size];
         }
     };
 

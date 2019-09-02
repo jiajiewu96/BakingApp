@@ -9,16 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
-import com.example.bakingapp.model.Steps;
+import com.example.bakingapp.model.Step;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
 
-    ArrayList<Steps> steps;
+    ArrayList<Step> steps;
 
-    public void setSteps(ArrayList<Steps> steps){
+    public interface OnStepSelectedListener{
+        void onStepSelected(Step step);
+    }
+
+    public void setSteps(ArrayList<Step> steps){
         this.steps = steps;
     }
 
