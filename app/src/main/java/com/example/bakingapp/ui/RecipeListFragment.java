@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +28,27 @@ import retrofit2.Response;
 public class RecipeListFragment extends Fragment {
 
     private RecipeListAdapter mRecipeListAdapter;
-    private TextView errorTextView;
+    private TextView mErrorTextView;
+
+    OnRecipeListClickListener mRecipeListCallback;
+
+    public interface OnRecipeListClickListener {
+        void onRecipeSelected(int position);
+    }
 
     public RecipeListFragment(){
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            mRecipeListCallback = (OnRecipeListClickListener) context;
+        } catch (ClassCastException e){
+            throw new ClassCastException(context.toString() +
+                     " Must implement OnRecipeClickListener");
+        }
     }
 
     @Nullable
@@ -39,7 +57,7 @@ public class RecipeListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         RecyclerView recipeListRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_view_recipe_list);
-        errorTextView = rootView.findViewById(R.id.tv_error);
+        mErrorTextView = rootView.findViewById(R.id.tv_error);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recipeListRecycler.setLayoutManager(layoutManager);
@@ -79,6 +97,6 @@ public class RecipeListFragment extends Fragment {
     }
 
     private void showError() {
-        errorTextView.setText(getString(R.string.error_message));
+        mErrorTextView.setText(getString(R.string.error_message));
     }
 }
