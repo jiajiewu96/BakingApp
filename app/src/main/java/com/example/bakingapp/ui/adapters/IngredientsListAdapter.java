@@ -17,6 +17,10 @@ public class IngredientsListAdapter extends RecyclerView.Adapter<IngredientsList
 
     private ArrayList<Ingredients> mIngredients;
 
+    public void setIngredients(ArrayList<Ingredients> ingredients){
+        mIngredients = ingredients;
+    }
+
     public IngredientsListAdapter() {
         mIngredients = new ArrayList<>();
     }
@@ -31,34 +35,13 @@ public class IngredientsListAdapter extends RecyclerView.Adapter<IngredientsList
     @Override
     public void onBindViewHolder(@NonNull IngredientsListViewHolder holder, int position) {
         String ingredient = convertFirstLetterToUpper(mIngredients.get(position).getIngredient());
-        String quantity = makeQuantity(mIngredients.get(position).getMeasure(), mIngredients.get(position).getQuantity());
+        String quantity = makeQuantity(position);
         holder.ingredient.setText(ingredient);
         holder.quantity.setText(quantity);
     }
 
-    private String makeQuantity(String measure, float quantity) {
-        String measureConversion;
-        switch (measure){
-            case("G"):
-                measureConversion = " Grams";
-                break;
-            case("TBLSP"):
-                measureConversion = " Table Spoons";
-                break;
-            case("TSP"):
-                measureConversion =  " Teaspoons";
-                break;
-            case("K"):
-                measureConversion = " Kilogram";
-                break;
-            case ("CUP"):
-                measureConversion = " Cups";
-                break;
-            default:
-                measureConversion = "";
-                break;
-        }
-        return  quantity + measureConversion;
+    private String makeQuantity(int position) {
+        return mIngredients.get(position).getQuantity() + mIngredients.get(position).getMeasure();
     }
 
     private String convertFirstLetterToUpper(String ingredient) {

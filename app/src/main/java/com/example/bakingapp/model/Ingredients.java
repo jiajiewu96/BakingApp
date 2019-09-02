@@ -49,10 +49,36 @@ public class Ingredients implements Parcelable {
     }
 
     public String getMeasure() {
-        return measure;
+        return makeQuantity(measure);
     }
 
     public String getIngredient() {
         return ingredient;
     }
+
+    private String makeQuantity(String measure) {
+        String measureConversion;
+        switch (measure){
+            case("G"):
+                measureConversion = " Grams";
+                break;
+            case("TBLSP"):
+                measureConversion = " Table Spoons";
+                break;
+            case("TSP"):
+                measureConversion =  " Teaspoons";
+                break;
+            case("K"):
+                measureConversion = " Kilogram";
+                break;
+            case ("CUP"):
+                measureConversion = " Cups";
+                break;
+            default:
+                measureConversion = "";
+                break;
+        }
+        return measureConversion;
+    }
+
 }
