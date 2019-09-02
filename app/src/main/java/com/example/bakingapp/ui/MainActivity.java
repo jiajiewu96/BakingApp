@@ -21,11 +21,12 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        RecipeListFragment recipeListFragment = new RecipeListFragment();
-        mFragmentManager.beginTransaction()
-                .add(R.id.recipie_contianer, recipeListFragment)
-                .commit();
+        if(savedInstanceState == null) {
+            RecipeListFragment recipeListFragment = new RecipeListFragment();
+            mFragmentManager.beginTransaction()
+                    .add(R.id.recipie_contianer, recipeListFragment)
+                    .commit();
+        }
     }
 
     @Override
