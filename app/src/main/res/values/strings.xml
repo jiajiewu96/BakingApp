@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Baking App</string>
     <string name="error_message">Problem loading from server</string>
+    <string name="tools_recipe_title">Apple Fritters</string>
 </resources>
