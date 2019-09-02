@@ -34,11 +34,11 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
     @Override
     public void onRecipeClick(Recipe recipe) {
-        mRecipeListCallback.onRecipeSelected();
+        mRecipeListCallback.onRecipeSelected(recipe);
     }
 
     public interface OnRecipeListClickListener {
-        void onRecipeSelected();
+        void onRecipeSelected(Recipe recipe);
     }
 
     public RecipeListFragment(){
