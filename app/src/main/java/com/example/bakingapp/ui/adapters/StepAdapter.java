@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
 
@@ -31,7 +30,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
-        holder.step.setText(steps.get(position));
+        if (position == 0) {
+            holder.step.setText(steps.get(position));
+        } else {
+            holder.step.setText(String.format(Locale.getDefault(),"%d %s", position, steps.get(position)));
+        }
     }
 
     @Override
