@@ -9,13 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.model.Steps;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
 
-    ArrayList<String> steps;
+    ArrayList<Steps> steps;
+
+    public void setSteps(ArrayList<Steps> steps){
+        this.steps = steps;
+    }
 
     public StepAdapter(){
         steps = new ArrayList<>();
@@ -31,9 +36,9 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     @Override
     public void onBindViewHolder(@NonNull StepViewHolder holder, int position) {
         if (position == 0) {
-            holder.step.setText(steps.get(position));
+            holder.step.setText(steps.get(position).getShortDescription());
         } else {
-            holder.step.setText(String.format(Locale.getDefault(),"%d %s", position, steps.get(position)));
+            holder.step.setText(String.format(Locale.getDefault(),"%d %s", position, steps.get(position).getShortDescription()));
         }
     }
 
