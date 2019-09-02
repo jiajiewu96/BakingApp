@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
         RecipeListFragment recipeListFragment = new RecipeListFragment();
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
-                .add(R.id.recipie_list_contianer, recipeListFragment)
+                .add(R.id.recipie_contianer, recipeListFragment)
                 .commit();
     }
 

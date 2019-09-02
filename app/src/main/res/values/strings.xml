@@ -2,4 +2,6 @@
     <string name="app_name">Baking App</string>
     <string name="error_message">Problem loading from server</string>
     <string name="tools_recipe_title">Apple Fritters</string>
+    <string name="quantity_label">Amount:</string>
+    <string name="tools_quantity">2 Cups</string>
 </resources>
