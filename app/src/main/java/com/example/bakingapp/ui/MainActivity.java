@@ -9,11 +9,12 @@ import android.widget.Toast;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.model.Recipe;
+import com.example.bakingapp.model.Step;
 
 import static com.example.bakingapp.utils.Consts.RECIPE_KEY;
 import static com.example.bakingapp.utils.Consts.RECIPE_STEP_TRANSACTION_NAME;
 
-public class MainActivity extends AppCompatActivity implements RecipeListFragment.OnRecipeListClickListener {
+public class MainActivity extends AppCompatActivity implements RecipeListFragment.OnRecipeListClickListener, RecipeStepListFragment.OnStepClickedListener {
 
     private final FragmentManager mFragmentManager = getSupportFragmentManager();
 
@@ -44,5 +45,10 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
                 .commit();
 
 
+    }
+
+    @Override
+    public void onStepClicked(Step step) {
+        Toast.makeText(this, step.getShortDescription(), Toast.LENGTH_SHORT).show();
     }
 }

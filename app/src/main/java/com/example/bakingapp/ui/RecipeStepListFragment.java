@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +14,35 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.model.Recipe;
+import com.example.bakingapp.model.Step;
 import com.example.bakingapp.ui.adapters.IngredientsListAdapter;
 import com.example.bakingapp.ui.adapters.StepAdapter;
 import com.example.bakingapp.utils.Consts;
 
-public class RecipeStepListFragment extends Fragment {
+public class RecipeStepListFragment extends Fragment implements StepAdapter.StepSelectedListener {
 
     private IngredientsListAdapter mIngredientsListAdapter;
     private StepAdapter mStepAdapter;
 
+    private OnStepClickedListener onStepClickedListener;
+
+    public interface OnStepClickedListener {
+        void onStepClicked(Step step);
+    }
+
     public RecipeStepListFragment(){
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            onStepClickedListener = (OnStepClickedListener) context;
+        } catch (ClassCastException e){
+            throw new ClassCastException(context.toString() +
+                    " Must implement onStepClickedListener");
+        }
     }
 
     @Nullable
@@ -50,7 +69,7 @@ public class RecipeStepListFragment extends Fragment {
         mIngredientsListAdapter = new IngredientsListAdapter();
         ingredientsRecycler.setAdapter(mIngredientsListAdapter);
 
-        mStepAdapter = new StepAdapter();
+        mStepAdapter = new StepAdapter(this);
         stepsRecycler.setAdapter(mStepAdapter);
 
         LinearLayoutManager ingredientsLayoutManager = new LinearLayoutManager(getActivity()){
@@ -66,5 +85,10 @@ public class RecipeStepListFragment extends Fragment {
 
         ingredientsRecycler.setNestedScrollingEnabled(true);
         stepsRecycler.setNestedScrollingEnabled(true);
+    }
+
+    @Override
+    public void onStepSelected(Step step) {
+        onStepClickedListener.onStepClicked(step);
     }
 }

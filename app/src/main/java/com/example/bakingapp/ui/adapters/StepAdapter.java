@@ -18,7 +18,9 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     ArrayList<Step> steps;
 
-    public interface OnStepSelectedListener{
+    private final StepSelectedListener mStepSelectedListener;
+
+    public interface StepSelectedListener{
         void onStepSelected(Step step);
     }
 
@@ -26,7 +28,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         this.steps = steps;
     }
 
-    public StepAdapter(){
+    public StepAdapter(StepSelectedListener stepSelectedListener){
+        mStepSelectedListener = stepSelectedListener;
         steps = new ArrayList<>();
     }
 
@@ -51,11 +54,18 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         return steps.size();
     }
 
-    class StepViewHolder extends RecyclerView.ViewHolder {
+    class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView step;
         StepViewHolder(@NonNull View itemView) {
             super(itemView);
             step = (TextView) itemView.findViewById(R.id.tv_step_short);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            mStepSelectedListener.onStepSelected(steps.get(position));
         }
     }
 }
