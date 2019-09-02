@@ -25,15 +25,20 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecipeListFragment extends Fragment {
+public class RecipeListFragment extends Fragment implements RecipeListAdapter.RecipeClickHandler {
 
     private RecipeListAdapter mRecipeListAdapter;
     private TextView mErrorTextView;
 
     OnRecipeListClickListener mRecipeListCallback;
 
+    @Override
+    public void onRecipeClick(Recipe recipe) {
+        mRecipeListCallback.onRecipeSelected();
+    }
+
     public interface OnRecipeListClickListener {
-        void onRecipeSelected(int position);
+        void onRecipeSelected();
     }
 
     public RecipeListFragment(){
@@ -62,7 +67,7 @@ public class RecipeListFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recipeListRecycler.setLayoutManager(layoutManager);
 
-        mRecipeListAdapter = new RecipeListAdapter();
+        mRecipeListAdapter = new RecipeListAdapter(this);
         recipeListRecycler.setAdapter(mRecipeListAdapter);
 
         loadRecipesFromJSON();

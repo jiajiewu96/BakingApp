@@ -18,13 +18,20 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     private ArrayList<Recipe> recipes;
 
+    private final RecipeClickHandler mClickHandler;
+
+    public interface RecipeClickHandler{
+        void onRecipeClick(Recipe recipe);
+    }
+
     public void setRecipes(ArrayList<Recipe> recipes){
         this.recipes = recipes;
         notifyDataSetChanged();
     }
 
-    public RecipeListAdapter(){
+    public RecipeListAdapter(RecipeClickHandler clickHandler){
         recipes = new ArrayList<>();
+        mClickHandler = clickHandler;
     }
 
 
@@ -47,11 +54,18 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         return recipes.size();
     }
 
-    class RecipeListViewHolder extends RecyclerView.ViewHolder{
+    class RecipeListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView recipeTitle;
         RecipeListViewHolder(@NonNull View itemView) {
             super(itemView);
             recipeTitle = (TextView) itemView.findViewById(R.id.tv_recipe_title);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            mClickHandler.onRecipeClick(recipes.get(adapterPosition));
         }
     }
 }
