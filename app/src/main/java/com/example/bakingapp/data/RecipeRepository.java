@@ -1,7 +1,9 @@
 package com.example.bakingapp.data;
 
-import com.example.bakingapp.model.RecipeResponse;
+import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.utils.RetroFitUtils;
+
+import java.util.List;
 
 import retrofit2.Call;
 
@@ -21,7 +23,7 @@ public class RecipeRepository {
         return sInstance;
     }
 
-    public Call<RecipeResponse> getRecipiesFromJSON(){
+    public Call<List<Recipe>> getRecipiesFromJSON(){
         return RetroFitUtils.loadRecipies();
     }
 

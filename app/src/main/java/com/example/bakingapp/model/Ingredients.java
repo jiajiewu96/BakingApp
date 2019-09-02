@@ -4,12 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Ingredients implements Parcelable {
-    private int quantity;
+    private float quantity;
     private String measure;
     private String ingredient;
 
     protected Ingredients(Parcel in) {
-        quantity = in.readInt();
+        quantity = in.readFloat();
         measure = in.readString();
         ingredient = in.readString();
     }
@@ -39,12 +39,12 @@ public class Ingredients implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(quantity);
+        parcel.writeFloat(quantity);
         parcel.writeString(measure);
         parcel.writeString(ingredient);
     }
 
-    public int getQuantity() {
+    public float getQuantity() {
         return quantity;
     }
 

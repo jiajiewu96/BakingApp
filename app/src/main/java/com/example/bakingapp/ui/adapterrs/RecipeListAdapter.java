@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui.adapterrs;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     }
 
     public RecipeListAdapter(){
-
+        recipes = new ArrayList<>();
     }
 
 
@@ -38,11 +39,12 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
     public void onBindViewHolder(@NonNull RecipeListViewHolder holder, int position) {
         String recipeName = recipes.get(position).getName();
         holder.recipeTitle.setText(recipeName);
+        Log.d("Tag", "onBindViewHolder:  set title");
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return recipes.size();
     }
 
     class RecipeListViewHolder extends RecyclerView.ViewHolder{

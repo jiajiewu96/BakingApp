@@ -1,8 +1,9 @@
 package com.example.bakingapp.utils;
 
-import com.example.bakingapp.model.RecipeResponse;
+import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.retrofitInterfaces.RecipeListService;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -24,7 +25,7 @@ public class RetroFitUtils {
         return retrofit;
     }
 
-    public static Call<RecipeResponse> loadRecipies(){
+    public static Call<List<Recipe>> loadRecipies(){
         Retrofit retrofit = buildRecipeUrl();
         RecipeListService recipeListService = retrofit.create(RecipeListService.class);
         return recipeListService.getRecipeResponse();

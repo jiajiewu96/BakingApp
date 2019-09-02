@@ -15,10 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
-import com.example.bakingapp.model.RecipeResponse;
 import com.example.bakingapp.ui.adapterrs.RecipeListAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +40,7 @@ public class RecipeListFragment extends Fragment {
 
         RecyclerView recipeListRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_view_recipe_list);
         errorTextView = rootView.findViewById(R.id.tv_error);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recipeListRecycler.setLayoutManager(layoutManager);
 
@@ -54,24 +55,24 @@ public class RecipeListFragment extends Fragment {
 
     private void loadRecipesFromJSON() {
         RecipeRepository repository = RecipeRepository.getInstance();
-        Call<RecipeResponse> responseCall = repository.getRecipiesFromJSON();
+        Call<List<Recipe>> responseCall = repository.getRecipiesFromJSON();
 
-        responseCall.enqueue(new Callback<RecipeResponse>() {
+        responseCall.enqueue(new Callback<List<Recipe>>() {
             @Override
-            public void onResponse(Call<RecipeResponse> call, Response<RecipeResponse> response) {
+            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 if(!response.isSuccessful()){
                     showError();
                     return;
                 }
                 ArrayList<Recipe> recipes;
                 if(response.body() != null){
-                    recipes = (ArrayList<Recipe>) response.body().getRecipes();
+                    recipes = (ArrayList<Recipe>) response.body();
                     mRecipeListAdapter.setRecipes(recipes);
                 }
             }
 
             @Override
-            public void onFailure(Call<RecipeResponse> call, Throwable t) {
+            public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 showError();
             }
         });
