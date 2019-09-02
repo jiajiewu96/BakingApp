@@ -38,7 +38,7 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
         if (position == 0) {
             holder.step.setText(steps.get(position).getShortDescription());
         } else {
-            holder.step.setText(String.format(Locale.getDefault(),"%d %s", position, steps.get(position).getShortDescription()));
+            holder.step.setText(String.format(Locale.getDefault(),"%d: %s", position, steps.get(position).getShortDescription()));
         }
     }
 
