@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
-import com.example.bakingapp.ui.adapterrs.RecipeListAdapter;
+import com.example.bakingapp.ui.adapters.RecipeListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

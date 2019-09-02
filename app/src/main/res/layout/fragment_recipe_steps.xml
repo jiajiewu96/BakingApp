@@ -10,6 +10,9 @@
         android:id="@+id/ingredients_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:contentPadding="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,7 +27,11 @@
         android:id="@+id/steps_card"
         android:layout_width="match_parent"
 
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:contentPadding="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ingredients_card">
