@@ -26,7 +26,7 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <SeekBar
+        <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"

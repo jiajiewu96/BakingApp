@@ -12,7 +12,9 @@ import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
 
 import static com.example.bakingapp.utils.Consts.RECIPE_KEY;
+import static com.example.bakingapp.utils.Consts.RECIPE_STEP_DETAIL_TRANSACTION_NAME;
 import static com.example.bakingapp.utils.Consts.RECIPE_STEP_TRANSACTION_NAME;
+import static com.example.bakingapp.utils.Consts.STEP_KEY;
 
 public class MainActivity extends AppCompatActivity implements RecipeListFragment.OnRecipeListClickListener, RecipeStepListFragment.OnStepClickedListener {
 
@@ -49,6 +51,15 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
 
     @Override
     public void onStepClicked(Step step) {
-        Toast.makeText(this, step.getShortDescription(), Toast.LENGTH_SHORT).show();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(STEP_KEY, step);
+
+        RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
+        recipeStepDetailFragment.setArguments(bundle);
+        mFragmentManager.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.recipie_contianer, recipeStepDetailFragment)
+                .addToBackStack(RECIPE_STEP_DETAIL_TRANSACTION_NAME)
+                .commit();
     }
 }
