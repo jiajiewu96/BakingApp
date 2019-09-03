@@ -19,6 +19,8 @@ import com.example.bakingapp.ui.adapters.IngredientsListAdapter;
 import com.example.bakingapp.ui.adapters.StepAdapter;
 import com.example.bakingapp.utils.Consts;
 
+import java.util.ArrayList;
+
 public class RecipeStepListFragment extends Fragment implements StepAdapter.StepSelectedListener {
 
     private IngredientsListAdapter mIngredientsListAdapter;
@@ -27,7 +29,7 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
     private OnStepClickedListener onStepClickedListener;
 
     public interface OnStepClickedListener {
-        void onStepClicked(Step step);
+        void onStepClicked(ArrayList<Step> steps, int position);
     }
 
     public RecipeStepListFragment(){
@@ -88,7 +90,7 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
     }
 
     @Override
-    public void onStepSelected(Step step) {
-        onStepClickedListener.onStepClicked(step);
+    public void onStepSelected(ArrayList<Step> steps, int position) {
+        onStepClickedListener.onStepClicked(steps, position);
     }
 }

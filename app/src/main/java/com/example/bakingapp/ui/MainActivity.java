@@ -11,12 +11,17 @@ import com.example.bakingapp.R;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
 
+import java.util.ArrayList;
+
+import static com.example.bakingapp.utils.Consts.FLAG_NEXT;
+import static com.example.bakingapp.utils.Consts.FLAG_PREVIOUS;
+import static com.example.bakingapp.utils.Consts.POSITION_KEY;
 import static com.example.bakingapp.utils.Consts.RECIPE_KEY;
 import static com.example.bakingapp.utils.Consts.RECIPE_STEP_DETAIL_TRANSACTION_NAME;
 import static com.example.bakingapp.utils.Consts.RECIPE_STEP_TRANSACTION_NAME;
 import static com.example.bakingapp.utils.Consts.STEP_KEY;
 
-public class MainActivity extends AppCompatActivity implements RecipeListFragment.OnRecipeListClickListener, RecipeStepListFragment.OnStepClickedListener {
+public class MainActivity extends AppCompatActivity implements RecipeListFragment.OnRecipeListClickListener, RecipeStepListFragment.OnStepClickedListener, RecipeStepDetailFragment.OnStepChangeClickListener {
 
     private final FragmentManager mFragmentManager = getSupportFragmentManager();
 
@@ -24,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             RecipeListFragment recipeListFragment = new RecipeListFragment();
             mFragmentManager.beginTransaction()
                     .add(R.id.recipie_contianer, recipeListFragment)
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
     public void onRecipeSelected(Recipe recipe) {
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RECIPE_KEY,recipe);
+        bundle.putParcelable(RECIPE_KEY, recipe);
 
         RecipeStepListFragment recipeStepListFragment = new RecipeStepListFragment();
         recipeStepListFragment.setArguments(bundle);
@@ -50,9 +55,10 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
     }
 
     @Override
-    public void onStepClicked(Step step) {
+    public void onStepClicked(ArrayList<Step> steps, int position) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(STEP_KEY, step);
+        bundle.putParcelableArrayList(STEP_KEY, steps);
+        bundle.putInt(POSITION_KEY, position);
 
         RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
         recipeStepDetailFragment.setArguments(bundle);
@@ -61,5 +67,27 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
                 .replace(R.id.recipie_contianer, recipeStepDetailFragment)
                 .addToBackStack(RECIPE_STEP_DETAIL_TRANSACTION_NAME)
                 .commit();
+    }
+
+    @Override
+    public void onStepChanged(int flag, int position, ArrayList<Step> steps) {
+        if (flag == FLAG_NEXT) {
+            position++;
+        } else if (flag == FLAG_PREVIOUS) {
+            position--;
+        }
+        if (position >= 0 && position < steps.size()) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(STEP_KEY, steps);
+            bundle.putInt(POSITION_KEY, position);
+            RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
+            recipeStepDetailFragment.setArguments(bundle);
+            mFragmentManager.popBackStack();
+            mFragmentManager.beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .replace(R.id.recipie_contianer, recipeStepDetailFragment)
+                    .addToBackStack(RECIPE_STEP_DETAIL_TRANSACTION_NAME)
+                    .commit();
+        }
     }
 }

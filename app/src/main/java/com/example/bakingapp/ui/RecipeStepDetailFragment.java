@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,11 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
+
+import static com.example.bakingapp.utils.Consts.FLAG_NEXT;
+import static com.example.bakingapp.utils.Consts.FLAG_PREVIOUS;
+import static com.example.bakingapp.utils.Consts.POSITION_KEY;
 import static com.example.bakingapp.utils.Consts.STEP_KEY;
 
 public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.EventListener {
@@ -49,13 +55,23 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
 
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
-    private Step mStep;
+    private ArrayList<Step> steps;
+    private int position;
 
     private Context sContext;
+    private TextView mLongStepTextView;
+    private ImageView mNextButton;
+    private ImageView mPreviousButton;
+
+    OnStepChangeClickListener mCallback;
+
+    public interface OnStepChangeClickListener {
+        void onStepChanged(int flag, int position, ArrayList<Step> steps);
+    }
 
 
     public RecipeStepDetailFragment() {
-
+        steps = new ArrayList<>();
     }
 
 
@@ -65,6 +81,12 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         if (sContext == null) {
             sContext = context;
         }
+        try {
+            mCallback = (OnStepChangeClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnStepChangeClickListener");
+        }
     }
 
     @Nullable
@@ -73,24 +95,51 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         View rootView = inflater.inflate(R.layout.fragment_recipe_step_detail, container, false);
 
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
-        TextView longStepTextView = (TextView) rootView.findViewById(R.id.tv_step_long);
+        mLongStepTextView = (TextView) rootView.findViewById(R.id.tv_step_long);
+        mNextButton = (ImageView) rootView.findViewById(R.id.iv_next_step);
+        mPreviousButton = (ImageView) rootView.findViewById(R.id.iv_previous_step);
+
         Bundle bundle = null;
 
         if (getArguments() != null) {
             bundle = getArguments();
-            mStep = bundle.getParcelable(STEP_KEY);
+            steps = bundle.getParcelableArrayList(STEP_KEY);
+            position = bundle.getInt(POSITION_KEY);
         }
-        if (mStep != null) {
-            longStepTextView.setText(mStep.getDescription());
+        setUpStepDetail();
 
-            if (isAdded() && sContext != null) {
+        setupStepNavigation();
+
+        return rootView;
+    }
+
+    private void setupStepNavigation() {
+        mPreviousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallback.onStepChanged(FLAG_PREVIOUS, position, steps);
+            }
+        });
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallback.onStepChanged(FLAG_NEXT, position, steps);
+            }
+        });
+    }
+
+    private void setUpStepDetail() {
+        if (steps != null) {
+            mLongStepTextView.setText(steps.get(position).getDescription());
+            if (TextUtils.isEmpty(steps.get(position).getVideoURL())) {
+                mPlayerView.setVisibility(View.GONE);
+            } else if (isAdded() && sContext != null) {
+                mPlayerView.setVisibility(View.VISIBLE);
                 initializeMediaSession();
-                initializePlayer(Uri.parse(mStep.getVideoURL()));
+                initializePlayer(Uri.parse(steps.get(position).getVideoURL()));
 
             }
         }
-
-        return rootView;
     }
 
     private void initializeMediaSession() {
@@ -141,6 +190,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         super.onDestroyView();
         releasePlayer();
         mMediaSession.setActive(false);
+        steps = null;
     }
 
     private void releasePlayer() {
