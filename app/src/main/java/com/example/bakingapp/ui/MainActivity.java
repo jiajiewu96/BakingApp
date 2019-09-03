@@ -21,7 +21,9 @@ import static com.example.bakingapp.utils.Consts.RECIPE_STEP_DETAIL_TRANSACTION_
 import static com.example.bakingapp.utils.Consts.RECIPE_STEP_TRANSACTION_NAME;
 import static com.example.bakingapp.utils.Consts.STEP_KEY;
 
-public class MainActivity extends AppCompatActivity implements RecipeListFragment.OnRecipeListClickListener, RecipeStepListFragment.OnStepClickedListener, RecipeStepDetailFragment.OnStepChangeClickListener {
+public class MainActivity extends AppCompatActivity implements RecipeListFragment.OnRecipeListClickListener,
+        RecipeStepListFragment.OnStepClickedListener,
+        RecipeStepDetailFragment.OnStepChangeClickListener {
 
     private final FragmentManager mFragmentManager = getSupportFragmentManager();
 
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
             recipeStepDetailFragment.setArguments(bundle);
             mFragmentManager.popBackStack();
             mFragmentManager.beginTransaction()
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .replace(R.id.recipie_contianer, recipeStepDetailFragment)
                     .addToBackStack(RECIPE_STEP_DETAIL_TRANSACTION_NAME)
                     .commit();
