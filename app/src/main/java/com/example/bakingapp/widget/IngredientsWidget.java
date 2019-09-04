@@ -27,7 +27,7 @@ public class IngredientsWidget extends AppWidgetProvider {
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
         views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
-        views.setOnClickPendingIntent(R.id.ingredient_widget_list,pendingIntent);
+        views.setOnClickPendingIntent(R.id.ingredients_widget_layout,pendingIntent);
         views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
 
         // Instruct the widget manager to update the widget

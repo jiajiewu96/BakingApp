@@ -5,7 +5,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.IntentService;
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.RemoteViews;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
@@ -13,6 +18,7 @@ import com.example.bakingapp.R;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
 import com.example.bakingapp.ui.adapters.TabAdapter;
+import com.example.bakingapp.widget.IngredientWidgetService;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -30,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
         RecipeStepDetailFragment.OnStepChangeClickListener {
 
     private final FragmentManager mFragmentManager = getSupportFragmentManager();
+    private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,18 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
         viewPager.setAdapter(tabAdapter);
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+        configureAppWidget();
+    }
+
+    private void configureAppWidget() {
+
+        Intent serviceIntent = new Intent(this, IngredientWidgetService.class);
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.ingredients_widget);
+        views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
+        views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
+
     }
 
     @Override
