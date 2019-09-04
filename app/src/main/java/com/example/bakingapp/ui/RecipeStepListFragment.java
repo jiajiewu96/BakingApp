@@ -71,40 +71,59 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
 
         mFavoriteImageView = rootView.findViewById(R.id.iv_favorite_button);
 
+
+        mFavoriteImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mRecipe.getFavorite() != Consts.FLAG_IS_FAVORITED){
+                    mRecipe.setFavorite(Consts.FLAG_IS_FAVORITED);
+                    setFavoriteSelectedImage();
+                    AppExecutors.getInstance().diskIO().execute(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    mFavoritesViewModel.addFavorite(mRecipe);
+                                }
+                            }
+                    );
+                }else{
+                    mRecipe.setFavorite(Consts.FLAG_IS_NOT_FAVORITED);
+                    setFavoriteUnselectedImage();
+                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            mFavoritesViewModel.removeFavorite(mRecipe);
+                        }
+                    });
+                }
+            }
+        });
+
         setupRecyclerViews(rootView);
 
         Bundle bundle = getArguments();
         if(bundle!=null){
             mRecipe = (Recipe) bundle.getParcelable(Consts.RECIPE_KEY);
-            mStepAdapter.setSteps(mRecipe.getSteps());
             mIngredientsListAdapter.setIngredients(mRecipe.getIngredients());
+            mStepAdapter.setSteps(mRecipe.getSteps());
         }
-
+        checkForRecipeInDB();
         return rootView;
     }
 
-    public void favoriteOnClick(View view){
-        if(mRecipe.getFavorite() != Consts.FLAG_IS_FAVORITED){
-            mRecipe.setFavorite(Consts.FLAG_IS_FAVORITED);
-            setFavoriteSelectedImage();
-            AppExecutors.getInstance().diskIO().execute(
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            mFavoritesViewModel.addFavorite(mRecipe);
-                        }
-                    }
-            );
-        }else{
-            mRecipe.setFavorite(Consts.FLAG_IS_NOT_FAVORITED);
-            setFavoriteUnselectedImage();
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    mFavoritesViewModel.removeFavorite(mRecipe);
+    private void checkForRecipeInDB() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if(mFavoritesViewModel.checkIfRecipeInDb(mRecipe)){
+                    mRecipe.setFavorite(Consts.FLAG_IS_FAVORITED);
+                    setFavoriteSelectedImage();
+                }else{
+                    mRecipe.setFavorite(Consts.FLAG_IS_NOT_FAVORITED);
+                    setFavoriteUnselectedImage();
                 }
-            });
-        }
+            }
+        });
     }
 
     private void setupRecyclerViews(View rootView) {

@@ -31,15 +31,19 @@ public class Recipe implements Parcelable {
         image = in.readString();
         favorite = in.readInt();
     }
+    @Ignore
+    public Recipe(){
 
-    public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Step> steps, int servings, String image, int favorite){
+    }
+
+    public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Step> steps, int servings, String image){
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
         this.servings = servings;
         this.image = image;
-        this.favorite = favorite;
+
     }
 
     @Ignore

@@ -15,14 +15,14 @@ public class RecipeRepository {
     private static RecipeRepository sInstance;
     private final FavoritesDatabase mDatabase;
 
-    private RecipeRepository(final FavoritesDatabase recipeDatabase){
+    private RecipeRepository(final FavoritesDatabase recipeDatabase) {
         mDatabase = recipeDatabase;
     }
 
-    public synchronized static RecipeRepository getInstance(FavoritesDatabase favoritesDatabase){
-        if(sInstance == null){
-            synchronized (LOCK){
-                if(sInstance == null){
+    public synchronized static RecipeRepository getInstance(FavoritesDatabase favoritesDatabase) {
+        if (sInstance == null) {
+            synchronized (LOCK) {
+                if (sInstance == null) {
                     sInstance = new RecipeRepository(favoritesDatabase);
                 }
             }
@@ -30,22 +30,23 @@ public class RecipeRepository {
         return sInstance;
     }
 
-    public Call<List<Recipe>> getRecipiesFromJSON(){
+    public Call<List<Recipe>> getRecipiesFromJSON() {
         return RetroFitUtils.loadRecipies();
     }
 
-    public LiveData<List<Recipe>> getRecipesFromFavorites(){
+    public LiveData<List<Recipe>> getRecipesFromFavorites() {
         return mDatabase.favoritesDao().loadAllRecipes();
     }
 
-    public void addRecipeToFavorites(Recipe recipe){
+    public void addRecipeToFavorites(Recipe recipe) {
         mDatabase.favoritesDao().insertRecipe(recipe);
     }
 
-    public void removeRecipeToFavorites(Recipe recipe){
+    public void removeRecipeToFavorites(Recipe recipe) {
         mDatabase.favoritesDao().deleteRecipe(recipe);
     }
-     public boolean checkForRecipeInDb(Recipe recipe){
+
+    public boolean checkForRecipeInDb(Recipe recipe) {
         return mDatabase.favoritesDao().checkForRecipe(recipe.getId()) != null;
-     }
+    }
 }
