@@ -26,6 +26,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <ImageView
+                android:id="@+id/iv_favorite_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                app:srcCompat="@drawable/ic_unfavorite" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -35,14 +42,16 @@
                     android:id="@+id/ingredients_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/ingredients_title" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_ingredients"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    tools:listitem="@layout/item_ingredients" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -50,7 +59,6 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/steps_card"
             android:layout_width="match_parent"
-
             android:layout_height="0dp"
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
@@ -78,11 +86,12 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:id="@+id/recycler_steps"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    tools:listitem="@layout/item_step" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
