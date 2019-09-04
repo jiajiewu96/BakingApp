@@ -21,6 +21,7 @@ public class FavoritesViewModel extends ViewModel {
 
     public FavoritesViewModel(@NonNull Application application, RecipeRepository recipeRepository){
         mRecipeRepository = recipeRepository;
+        mFavorites = mRecipeRepository.getRecipesFromFavorites();
     }
 
     public LiveData<List<Recipe>> getfavorites(){
