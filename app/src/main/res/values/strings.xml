@@ -6,4 +6,6 @@
     <string name="tools_quantity">2 Cups</string>
     <string name="ingredients_title">Ingredients:</string>
     <string name="steps_title">Steps:</string>
+    <string name="recipe_list_title">Recipes</string>
+    <string name="favorites_list_title">Favorites</string>
 </resources>

@@ -17,6 +17,7 @@ import com.example.bakingapp.R;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.ui.adapters.RecipeListAdapter;
+import com.example.bakingapp.utils.Consts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.bakingapp.utils.Consts.FLAG_RECIPES;
+import static com.example.bakingapp.utils.Consts.RECIPE_LIST_FRAGMENT_KEY;
+
 public class RecipeListFragment extends Fragment implements RecipeListAdapter.RecipeClickHandler {
 
     private RecipeListAdapter mRecipeListAdapter;
     private TextView mErrorTextView;
+    private int flag;
+
 
     OnRecipeListClickListener mRecipeListCallback;
 
@@ -45,6 +51,14 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
     }
 
+    public static RecipeListFragment newInstance(int flag){
+        RecipeListFragment fragment = new RecipeListFragment();
+        Bundle args = new Bundle();
+        args.putInt(RECIPE_LIST_FRAGMENT_KEY, flag);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -56,10 +70,21 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(getArguments() != null){
+            flag = getArguments().getInt(RECIPE_LIST_FRAGMENT_KEY);
+        } else {
+            flag = FLAG_RECIPES;
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
+
 
         RecyclerView recipeListRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_view_recipe_list);
         mErrorTextView = rootView.findViewById(R.id.tv_error);
@@ -70,8 +95,9 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         mRecipeListAdapter = new RecipeListAdapter(this);
         recipeListRecycler.setAdapter(mRecipeListAdapter);
 
-        loadRecipesFromJSON();
-
+        if(flag == Consts.FLAG_RECIPES) {
+            loadRecipesFromJSON();
+        }
 
         return rootView;
     }

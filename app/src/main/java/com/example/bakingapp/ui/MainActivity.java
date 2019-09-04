@@ -3,13 +3,17 @@ package com.example.bakingapp.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
+import com.example.bakingapp.ui.adapters.TabAdapter;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
@@ -31,12 +35,11 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            RecipeListFragment recipeListFragment = new RecipeListFragment();
-            mFragmentManager.beginTransaction()
-                    .add(R.id.recipie_contianer, recipeListFragment)
-                    .commit();
-        }
+        TabAdapter tabAdapter = new TabAdapter(this, getSupportFragmentManager());
+        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setAdapter(tabAdapter);
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
         recipeStepListFragment.setArguments(bundle);
         mFragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.recipie_contianer, recipeStepListFragment)
+                .replace(R.id.recipe_container, recipeStepListFragment)
                 .addToBackStack(RECIPE_STEP_TRANSACTION_NAME)
                 .commit();
 
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
         recipeStepDetailFragment.setArguments(bundle);
         mFragmentManager.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.recipie_contianer, recipeStepDetailFragment)
+                .replace(R.id.recipe_container, recipeStepDetailFragment)
                 .addToBackStack(RECIPE_STEP_DETAIL_TRANSACTION_NAME)
                 .commit();
     }
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
             recipeStepDetailFragment.setArguments(bundle);
             mFragmentManager.popBackStack();
             mFragmentManager.beginTransaction()
-                    .replace(R.id.recipie_contianer, recipeStepDetailFragment)
+                    .replace(R.id.recipe_container, recipeStepDetailFragment)
                     .addToBackStack(RECIPE_STEP_DETAIL_TRANSACTION_NAME)
                     .commit();
         }
