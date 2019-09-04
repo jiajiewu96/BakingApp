@@ -34,6 +34,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
         mClickHandler = clickHandler;
     }
 
+    public boolean emptyRecipesList(){
+        return recipes.isEmpty();
+    }
+
 
     @NonNull
     @Override

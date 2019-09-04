@@ -4,8 +4,8 @@ public class Consts {
 
     public static final int FLAG_PREVIOUS = 2002;
     public static final int FLAG_NEXT = 1002;
-    public static final int FLAG_RECIPES = 0;
-    public static final int FLAG_FAVORITES = 1;
+    public static final int FLAG_RECIPES = 1003;
+    public static final int FLAG_FAVORITES = 2003;
 
     public static final String RECIPE_LIST_FRAGMENT_KEY = "com.example.bakingapp.RECIPE_LIST_FRAGMENT_KEY";
     public static final String RECIPE_KEY = "com.example.bakingapp.RECIPE_KEY";

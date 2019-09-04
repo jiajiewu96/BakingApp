@@ -37,6 +37,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
 
     OnRecipeListClickListener mRecipeListCallback;
+    private TextView mEmptyTextView;
 
     @Override
     public void onRecipeClick(Recipe recipe) {
@@ -88,6 +89,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
         RecyclerView recipeListRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_view_recipe_list);
         mErrorTextView = rootView.findViewById(R.id.tv_error);
+        mEmptyTextView = rootView.findViewById(R.id.tv_empty);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recipeListRecycler.setLayoutManager(layoutManager);
@@ -97,6 +99,8 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
         if(flag == Consts.FLAG_RECIPES) {
             loadRecipesFromJSON();
+        } else if (flag == Consts.FLAG_FAVORITES){
+
         }
 
         return rootView;

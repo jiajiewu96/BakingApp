@@ -11,6 +11,9 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.bakingapp.R;
 import com.example.bakingapp.ui.RecipeListFragment;
 
+import static com.example.bakingapp.utils.Consts.FLAG_FAVORITES;
+import static com.example.bakingapp.utils.Consts.FLAG_RECIPES;
+
 public class TabAdapter extends FragmentStatePagerAdapter {
 
     @StringRes
@@ -27,13 +30,13 @@ public class TabAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = null;
         switch (position){
             case 0:
-                fragment = RecipeListFragment.newInstance(position);
+                fragment = RecipeListFragment.newInstance(FLAG_RECIPES);
                 break;
             case 1:
-                fragment = RecipeListFragment.newInstance(position);
+                fragment = RecipeListFragment.newInstance(FLAG_FAVORITES);
                 break;
             default:
-                fragment = RecipeListFragment.newInstance(0);
+                fragment = RecipeListFragment.newInstance(FLAG_RECIPES);
                 break;
         }
         return fragment;
