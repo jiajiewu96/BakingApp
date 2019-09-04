@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
 
     private IngredientsListAdapter mIngredientsListAdapter;
     private StepAdapter mStepAdapter;
+    private ImageView mFavoriteImageView;
 
     private OnStepClickedListener onStepClickedListener;
 
@@ -51,6 +53,8 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_steps, container, false);
+
+        mFavoriteImageView = rootView.findViewById(R.id.iv_favorite_button);
 
         setupRecyclerViews(rootView);
 
