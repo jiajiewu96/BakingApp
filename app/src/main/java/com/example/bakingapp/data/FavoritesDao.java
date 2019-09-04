@@ -8,12 +8,14 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.example.bakingapp.model.Ingredients;
 import com.example.bakingapp.model.Recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
-public interface RecipeDao {
+public interface FavoritesDao {
     @Query("SELECT * FROM recipes")
     LiveData<List<Recipe>> loadAllRecipes();
 
@@ -25,4 +27,7 @@ public interface RecipeDao {
 
     @Query("SELECT * FROM recipes WHERE id = :queryId")
     Recipe checkForRecipe(int queryId);
+
+    @Query("SELECT ingredients FROM recipes")
+    ArrayList<Ingredients> getIngredients();
 }

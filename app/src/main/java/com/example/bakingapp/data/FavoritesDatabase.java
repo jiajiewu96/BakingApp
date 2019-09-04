@@ -3,7 +3,6 @@ package com.example.bakingapp.data;
 
 import android.content.Context;
 
-import androidx.core.content.ContextCompat;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -29,5 +28,5 @@ public abstract class FavoritesDatabase extends RoomDatabase {
         return sInstance;
     }
 
-    public abstract RecipeDao favoritesDao();
+    public abstract FavoritesDao favoritesDao();
 }
