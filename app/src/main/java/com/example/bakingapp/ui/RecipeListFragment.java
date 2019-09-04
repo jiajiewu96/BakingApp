@@ -12,11 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
+import com.example.bakingapp.data.FavoritesViewModel;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.ui.adapters.RecipeListAdapter;
@@ -107,10 +111,21 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         if(flag == Consts.FLAG_RECIPES) {
             loadRecipesFromJSON();
         } else if (flag == Consts.FLAG_FAVORITES){
-
+            loadFavoritesFromDB();
         }
 
         return rootView;
+    }
+
+    private void loadFavoritesFromDB() {
+        FavoritesViewModel viewModel = ViewModelProviders.of(mFragmentActivity).get(FavoritesViewModel.class);
+        viewModel.getfavorites().observe(this, new Observer<List<Recipe>>() {
+            @Override
+            public void onChanged(List<Recipe> recipes) {
+                ArrayList<Recipe> favorites = (ArrayList<Recipe>) recipes;
+                mRecipeListAdapter.setRecipes(favorites);
+            }
+        });
     }
 
     private void loadRecipesFromJSON() {

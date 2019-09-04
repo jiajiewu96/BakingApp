@@ -4,18 +4,27 @@ import android.app.Application;
 import android.graphics.Movie;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.bakingapp.BaseApp;
 
 import com.example.bakingapp.model.Recipe;
 
+import java.util.List;
+
 public class FavoritesViewModel extends ViewModel {
 
     private static RecipeRepository mRecipeRepository;
 
+    private static LiveData<List<Recipe>> mFavorites;
+
     public FavoritesViewModel(@NonNull Application application, RecipeRepository recipeRepository){
         mRecipeRepository = recipeRepository;
+    }
+
+    public LiveData<List<Recipe>> getfavorites(){
+        return mFavorites;
     }
 
     public void addFavorite(Recipe recipe){
