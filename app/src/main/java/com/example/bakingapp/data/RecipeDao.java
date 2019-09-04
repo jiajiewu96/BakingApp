@@ -22,4 +22,7 @@ public interface RecipeDao {
 
     @Delete
     void deleteRecipe(Recipe recipe);
+
+    @Query("SELECT * FROM recipes WHERE id = :queryId")
+    Recipe checkForRecipe(int queryId);
 }

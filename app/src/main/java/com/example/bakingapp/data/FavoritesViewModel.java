@@ -36,6 +36,10 @@ public class FavoritesViewModel extends ViewModel {
         mRecipeRepository.removeRecipeToFavorites(recipe);
     }
 
+    public boolean checkIfRecipeInDb(Recipe recipe){
+        return mRecipeRepository.checkForRecipeInDb(recipe);
+    }
+
     public static class Factory extends ViewModelProvider.NewInstanceFactory{
         @NonNull
         private final Application mApplication;

@@ -45,5 +45,7 @@ public class RecipeRepository {
     public void removeRecipeToFavorites(Recipe recipe){
         mDatabase.favoritesDao().deleteRecipe(recipe);
     }
-
+     public boolean checkForRecipeInDb(Recipe recipe){
+        return mDatabase.favoritesDao().checkForRecipe(recipe.getId()) != null;
+     }
 }
