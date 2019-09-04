@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
+import com.example.bakingapp.data.FavoriteListViewModel;
 import com.example.bakingapp.data.FavoritesViewModel;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
@@ -118,7 +119,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
     }
 
     private void loadFavoritesFromDB() {
-        FavoritesViewModel viewModel = ViewModelProviders.of(mFragmentActivity).get(FavoritesViewModel.class);
+        FavoriteListViewModel viewModel = ViewModelProviders.of(mFragmentActivity).get(FavoriteListViewModel.class);
         viewModel.getfavorites().observe(this, new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {

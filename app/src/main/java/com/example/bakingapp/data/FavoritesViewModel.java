@@ -17,15 +17,8 @@ public class FavoritesViewModel extends ViewModel {
 
     private static RecipeRepository mRecipeRepository;
 
-    private static LiveData<List<Recipe>> mFavorites;
-
     public FavoritesViewModel(@NonNull Application application, RecipeRepository recipeRepository){
         mRecipeRepository = recipeRepository;
-        mFavorites = mRecipeRepository.getRecipesFromFavorites();
-    }
-
-    public LiveData<List<Recipe>> getfavorites(){
-        return mFavorites;
     }
 
     public void addFavorite(Recipe recipe){

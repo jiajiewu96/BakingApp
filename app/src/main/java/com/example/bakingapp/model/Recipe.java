@@ -81,6 +81,10 @@ public class Recipe implements Parcelable {
 
     public int getFavorite(){return favorite;}
 
+    public void setFavorite(int favorite){
+        this.favorite = favorite;
+    }
+
     @Override
     @Ignore
     public int describeContents() {

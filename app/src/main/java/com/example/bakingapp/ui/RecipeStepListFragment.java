@@ -10,10 +10,14 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bakingapp.AppExecutors;
 import com.example.bakingapp.R;
+import com.example.bakingapp.data.FavoritesViewModel;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
 import com.example.bakingapp.ui.adapters.IngredientsListAdapter;
@@ -27,6 +31,8 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
     private IngredientsListAdapter mIngredientsListAdapter;
     private StepAdapter mStepAdapter;
     private ImageView mFavoriteImageView;
+    private FavoritesViewModel mFavoritesViewModel;
+    private FragmentActivity mFragmentActivity;
 
     private OnStepClickedListener onStepClickedListener;
     private Recipe mRecipe;
@@ -50,6 +56,14 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFragmentActivity = getActivity();
+        FavoritesViewModel.Factory factory = new FavoritesViewModel.Factory(mFragmentActivity.getApplication());
+        mFavoritesViewModel = ViewModelProviders.of(mFragmentActivity,factory).get(FavoritesViewModel.class);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,7 +84,27 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
     }
 
     public void favoriteOnClick(View view){
-        if()
+        if(mRecipe.getFavorite() != Consts.FLAG_IS_FAVORITED){
+            mRecipe.setFavorite(Consts.FLAG_IS_FAVORITED);
+            setFavoriteSelectedImage();
+            AppExecutors.getInstance().diskIO().execute(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mFavoritesViewModel.addFavorite(mRecipe);
+                        }
+                    }
+            );
+        }else{
+            mRecipe.setFavorite(Consts.FLAG_IS_NOT_FAVORITED);
+            setFavoriteUnselectedImage();
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mFavoritesViewModel.removeFavorite(mRecipe);
+                }
+            });
+        }
     }
 
     private void setupRecyclerViews(View rootView) {
@@ -96,6 +130,14 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
 
         ingredientsRecycler.setNestedScrollingEnabled(true);
         stepsRecycler.setNestedScrollingEnabled(true);
+    }
+
+    private void setFavoriteUnselectedImage() {
+        mFavoriteImageView.setImageResource(R.drawable.ic_unfavorite);
+    }
+
+    private void setFavoriteSelectedImage() {
+        mFavoriteImageView.setImageResource(R.drawable.ic_favorite);
     }
 
     @Override
