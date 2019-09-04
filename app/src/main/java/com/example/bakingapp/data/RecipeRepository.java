@@ -1,5 +1,7 @@
 package com.example.bakingapp.data;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.utils.RetroFitUtils;
 
@@ -11,12 +13,17 @@ public class RecipeRepository {
 
     private static final Object LOCK = new Object();
     private static RecipeRepository sInstance;
+    private final FavoritesDatabase mDatabase;
 
-    public synchronized static RecipeRepository getInstance(){
+    private RecipeRepository(final FavoritesDatabase recipeDatabase){
+        mDatabase = recipeDatabase;
+    }
+
+    public synchronized static RecipeRepository getInstance(FavoritesDatabase favoritesDatabase){
         if(sInstance == null){
             synchronized (LOCK){
                 if(sInstance == null){
-                    sInstance = new RecipeRepository();
+                    sInstance = new RecipeRepository(favoritesDatabase);
                 }
             }
         }
@@ -27,5 +34,16 @@ public class RecipeRepository {
         return RetroFitUtils.loadRecipies();
     }
 
+    public LiveData<List<Recipe>> getRecipesFromFavorites(){
+        return mDatabase.favoritesDao().loadAllRecipes();
+    }
+
+    public void addRecipeToFavorites(Recipe recipe){
+        mDatabase.favoritesDao().insertRecipe(recipe);
+    }
+
+    public void removeRecipeToFavorites(Recipe recipe){
+        mDatabase.favoritesDao().deleteRecipe(recipe);
+    }
 
 }
