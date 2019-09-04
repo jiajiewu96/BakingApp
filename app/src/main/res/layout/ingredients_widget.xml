@@ -26,14 +26,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_widget_recipe_title"
             tools:listitem="@layout/item_ingredients" />
+
         <TextView
+            android:id="@+id/tv_widget_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/widget_empty_text"
-            android:visibility="invisible"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:gravity="center"/>
+            android:visibility="invisible" />
     </FrameLayout>
 
 </LinearLayout>
