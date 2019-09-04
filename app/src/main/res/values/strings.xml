@@ -9,4 +9,6 @@
     <string name="recipe_list_title">Recipes</string>
     <string name="favorites_list_title">Favorites</string>
     <string name="empty_message">There are no recipes to show!</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
