@@ -1,8 +1,8 @@
-import android.app.Application;
+package com.example.bakingapp;
 
+import android.app.Application;
 import com.example.bakingapp.data.FavoritesDatabase;
 import com.example.bakingapp.data.RecipeRepository;
-import com.example.bakingapp.model.Recipe;
 
 public class BaseApp extends Application {
 

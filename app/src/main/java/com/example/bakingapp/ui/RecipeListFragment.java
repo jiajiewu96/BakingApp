@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,9 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
@@ -35,6 +38,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
     private TextView mErrorTextView;
     private int flag;
 
+    private FragmentActivity mFragmentActivity;
 
     OnRecipeListClickListener mRecipeListCallback;
     private TextView mEmptyTextView;
@@ -79,6 +83,9 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         } else {
             flag = FLAG_RECIPES;
         }
+        if(mFragmentActivity == null) {
+            mFragmentActivity = getActivity();
+        }
     }
 
     @Nullable
@@ -107,7 +114,8 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
     }
 
     private void loadRecipesFromJSON() {
-        RecipeRepository repository = RecipeRepository.getInstance();
+        Application application = mFragmentActivity.getApplication();
+        RecipeRepository repository = ((BaseApp) application).getRepository();
         Call<List<Recipe>> responseCall = repository.getRecipiesFromJSON();
 
         responseCall.enqueue(new Callback<List<Recipe>>() {
