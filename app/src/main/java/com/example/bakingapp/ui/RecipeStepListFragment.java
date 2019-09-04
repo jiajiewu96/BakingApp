@@ -29,6 +29,7 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
     private ImageView mFavoriteImageView;
 
     private OnStepClickedListener onStepClickedListener;
+    private Recipe mRecipe;
 
     public interface OnStepClickedListener {
         void onStepClicked(ArrayList<Step> steps, int position);
@@ -60,12 +61,16 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
 
         Bundle bundle = getArguments();
         if(bundle!=null){
-            Recipe recipe = (Recipe) bundle.getParcelable(Consts.RECIPE_KEY);
-            mStepAdapter.setSteps(recipe.getSteps());
-            mIngredientsListAdapter.setIngredients(recipe.getIngredients());
+            mRecipe = (Recipe) bundle.getParcelable(Consts.RECIPE_KEY);
+            mStepAdapter.setSteps(mRecipe.getSteps());
+            mIngredientsListAdapter.setIngredients(mRecipe.getIngredients());
         }
 
         return rootView;
+    }
+
+    public void favoriteOnClick(View view){
+        if()
     }
 
     private void setupRecyclerViews(View rootView) {

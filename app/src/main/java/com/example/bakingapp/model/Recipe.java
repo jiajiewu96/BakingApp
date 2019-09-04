@@ -18,6 +18,8 @@ public class Recipe implements Parcelable {
     private ArrayList<Step> steps;
     private int servings;
     private String image;
+    @Ignore
+    private int favorite;
 
     @Ignore
     protected Recipe(Parcel in) {
@@ -27,15 +29,17 @@ public class Recipe implements Parcelable {
         steps = in.createTypedArrayList(Step.CREATOR);
         servings = in.readInt();
         image = in.readString();
+        favorite = in.readInt();
     }
 
-    public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Step> steps, int servings, String image){
+    public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Step> steps, int servings, String image, int favorite){
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
         this.servings = servings;
         this.image = image;
+        this.favorite = favorite;
     }
 
     @Ignore
@@ -75,6 +79,8 @@ public class Recipe implements Parcelable {
         return image;
     }
 
+    public int getFavorite(){return favorite;}
+
     @Override
     @Ignore
     public int describeContents() {
@@ -90,5 +96,6 @@ public class Recipe implements Parcelable {
         parcel.writeTypedList(steps);
         parcel.writeInt(servings);
         parcel.writeString(image);
+        parcel.writeInt(favorite);
     }
 }
