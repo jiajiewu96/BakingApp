@@ -11,4 +11,5 @@
     <string name="empty_message">There are no recipes to show!</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="tool_ingredient_title">Ingredient Title</string>
 </resources>
