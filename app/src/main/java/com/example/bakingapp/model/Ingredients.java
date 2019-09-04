@@ -3,6 +3,7 @@ package com.example.bakingapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+
 public class Ingredients implements Parcelable {
     private float quantity;
     private String measure;

@@ -3,9 +3,15 @@ package com.example.bakingapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.util.ArrayList;
 
+@Entity(tableName = "recipes")
 public class Recipe implements Parcelable {
+    @PrimaryKey
     private int id;
     private String name;
     private ArrayList<Ingredients> ingredients;
@@ -13,6 +19,7 @@ public class Recipe implements Parcelable {
     private int servings;
     private String image;
 
+    @Ignore
     protected Recipe(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -31,6 +38,7 @@ public class Recipe implements Parcelable {
         this.image = image;
     }
 
+    @Ignore
     public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
         @Override
         public Recipe createFromParcel(Parcel in) {
@@ -68,11 +76,13 @@ public class Recipe implements Parcelable {
     }
 
     @Override
+    @Ignore
     public int describeContents() {
         return 0;
     }
 
     @Override
+    @Ignore
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(name);
