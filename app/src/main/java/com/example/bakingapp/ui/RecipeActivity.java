@@ -5,12 +5,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
 import com.example.bakingapp.ui.fragmentInterfaces.CommonFragmentInterfaces;
+import com.example.bakingapp.utils.Consts;
 
 import java.util.ArrayList;
 
@@ -27,24 +29,25 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepListF
 
     private final FragmentManager mFragmentManager = getSupportFragmentManager();
     private int mSw;
+    private Recipe mRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
         mSw = ((BaseApp) this.getApplication()).screenWidthInDp();
-        Recipe recipe = null;
+        mRecipe = null;
         Bundle bundle = new Bundle();
         if (savedInstanceState != null)
-            recipe = savedInstanceState.getParcelable(RECIPE_KEY);
+            mRecipe = savedInstanceState.getParcelable(RECIPE_KEY);
         else if (getIntent().getExtras() != null) {
-            recipe = getIntent().getExtras().getParcelable(RECIPE_KEY);
+            mRecipe = getIntent().getExtras().getParcelable(RECIPE_KEY);
         }
-        bundle.putParcelable(RECIPE_KEY, recipe);
+        bundle.putParcelable(RECIPE_KEY, mRecipe);
         RecipeStepListFragment recipeStepListFragment = new RecipeStepListFragment();
         recipeStepListFragment.setArguments(bundle);
-        if (isTabletScreenWidth()) {
-            ArrayList<Step> steps = recipe.getSteps();
+        if (isTabletScreenWidth() && mFragmentManager.getBackStackEntryCount() == 0) {
+            ArrayList<Step> steps = mRecipe.getSteps();
             bundle.putParcelableArrayList(STEP_KEY, steps);
             bundle.putInt(POSITION_KEY, 0);
 
@@ -55,14 +58,21 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepListF
                     .add(R.id.step_list_container, recipeStepListFragment)
                     .add(R.id.step_detail_container, recipeStepDetailFragment)
                     .commit();
-        } else {
+        } else if(mFragmentManager.getBackStackEntryCount() == 0) {
             mFragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .add(R.id.recipe_container, recipeStepListFragment)
+                    .addToBackStack(RECIPE_STEP_TRANSACTION_NAME)
                     .commit();
         }
+        Log.d("RecipeActivity", "RecipeActivity" + String.valueOf(mFragmentManager.getBackStackEntryCount()));
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(RECIPE_KEY, mRecipe);
+    }
 
     @Override
     public void onStepClicked(ArrayList<Step> steps, int position) {
@@ -110,7 +120,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepListF
             bundle.putInt(POSITION_KEY, position);
             RecipeStepDetailFragment recipeStepDetailFragment = new RecipeStepDetailFragment();
             recipeStepDetailFragment.setArguments(bundle);
-            if (!isTabletScreenWidth()) {
+            if (!isTabletScreenWidth() && mFragmentManager.getBackStackEntryCount() >0) {
                 mFragmentManager.popBackStack();
             }
             FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
