@@ -7,6 +7,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.bakingapp.AppExecutors;
+import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.FavoritesDatabase;
 import com.example.bakingapp.data.RecipeRepository;
@@ -26,7 +27,7 @@ public class IngredientWidgetService extends RemoteViewsService {
         private int mAppWidgetId;
         private List<Recipe> mRecipes;
         private ArrayList<Ingredients> mIngredients = new ArrayList<>();
-        private FavoritesDatabase mFavoritesDatabase;
+        private RecipeRepository mRecipeRepository;
 
         IngredientsWidgetItemFactory(Context context, Intent intent){
             mContext = context;
@@ -35,7 +36,7 @@ public class IngredientWidgetService extends RemoteViewsService {
         }
         @Override
         public void onCreate() {
-            mFavoritesDatabase = FavoritesDatabase.getInstance(mContext);
+            mRecipeRepository = ((BaseApp) getApplication()).getRepository();
         }
 
         @Override
@@ -43,14 +44,14 @@ public class IngredientWidgetService extends RemoteViewsService {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
-                    mRecipes = mFavoritesDatabase.favoritesDao().loadRecipesForWidget();
+                    mRecipes = mRecipeRepository.loadRecipesFromWidget();
                 }
             });
         }
 
         @Override
         public void onDestroy() {
-            mFavoritesDatabase.close();
+            mRecipeRepository = null;
             mRecipes.clear();
             mIngredients.clear();
         }
