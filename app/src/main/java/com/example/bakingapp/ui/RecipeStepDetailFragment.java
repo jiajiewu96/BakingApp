@@ -233,7 +233,9 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
     public void onDestroyView() {
         super.onDestroyView();
         releasePlayer();
-        mMediaSession.setActive(false);
+        if(mMediaSession != null) {
+            mMediaSession.setActive(false);
+        }
         steps = null;
     }
 
