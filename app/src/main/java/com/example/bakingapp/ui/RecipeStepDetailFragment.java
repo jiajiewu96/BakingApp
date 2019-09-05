@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import static com.example.bakingapp.utils.Consts.EXOPLAYER_KEY;
 import static com.example.bakingapp.utils.Consts.FLAG_NEXT;
 import static com.example.bakingapp.utils.Consts.FLAG_PREVIOUS;
+import static com.example.bakingapp.utils.Consts.PLAY_WHEN_READY_KEY;
 import static com.example.bakingapp.utils.Consts.POSITION_KEY;
 import static com.example.bakingapp.utils.Consts.STEP_KEY;
 
@@ -65,6 +66,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
     private PlaybackStateCompat.Builder mStateBuilder;
     private ArrayList<Step> steps;
     private int position;
+    private boolean mPlayWhenReadySaveState;
     private FragmentActivity mFragmentActivity;
 
 
@@ -137,9 +139,10 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         setUpStepDetail();
         if(savedInstanceState != null){
             mPlayerPosition = savedInstanceState.getLong(EXOPLAYER_KEY);
+            mPlayWhenReadySaveState = savedInstanceState.getBoolean(PLAY_WHEN_READY_KEY);
             if(mPlayerPosition != C.TIME_UNSET && mExoPlayer !=null){
                 mExoPlayer.seekTo(mPlayerPosition);
-                mExoPlayer.setPlayWhenReady(true);
+                mExoPlayer.setPlayWhenReady(mPlayWhenReadySaveState);
             }
         }
         setupStepNavigation();
@@ -225,7 +228,9 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         super.onSaveInstanceState(outState);
         if(mExoPlayer!=null){
             mPlayerPosition = mExoPlayer.getCurrentPosition();
+            boolean played = mExoPlayer.getPlayWhenReady();
             outState.putLong(EXOPLAYER_KEY, mPlayerPosition);
+            outState.putBoolean(PLAY_WHEN_READY_KEY, played);
         }
     }
 
