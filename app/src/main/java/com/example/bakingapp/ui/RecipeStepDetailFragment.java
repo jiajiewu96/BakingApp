@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.example.bakingapp.R;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -47,6 +48,7 @@ import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
 
+import static com.example.bakingapp.utils.Consts.EXOPLAYER_KEY;
 import static com.example.bakingapp.utils.Consts.FLAG_NEXT;
 import static com.example.bakingapp.utils.Consts.FLAG_PREVIOUS;
 import static com.example.bakingapp.utils.Consts.POSITION_KEY;
@@ -56,6 +58,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
 
     private SimpleExoPlayerView mPlayerView;
     private SimpleExoPlayer mExoPlayer;
+    private long mPlayerPosition;
     private static final String TAG = RecipeStepDetailFragment.class.getSimpleName();
 
     private static MediaSessionCompat mMediaSession;
@@ -73,6 +76,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
     OnStepChangeClickListener mCallback;
     private FragmentActivity mActivity;
     private ActionBar mActionBar;
+    private Uri mVideoUri;
 
     public interface OnStepChangeClickListener {
         void onStepChanged(int flag, int position, ArrayList<Step> steps);
@@ -98,7 +102,6 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
                     + " must implement OnStepChangeClickListener");
         }
     }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,8 +132,16 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
             steps = bundle.getParcelableArrayList(STEP_KEY);
             position = bundle.getInt(POSITION_KEY);
         }
-        setUpStepDetail();
 
+
+        setUpStepDetail();
+        if(savedInstanceState != null){
+            mPlayerPosition = savedInstanceState.getLong(EXOPLAYER_KEY);
+            if(mPlayerPosition != C.TIME_UNSET && mExoPlayer !=null){
+                mExoPlayer.seekTo(mPlayerPosition);
+                mExoPlayer.setPlayWhenReady(true);
+            }
+        }
         setupStepNavigation();
 
         return rootView;
@@ -159,7 +170,8 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
             } else if (isAdded() && sContext != null) {
                 mPlayerView.setVisibility(View.VISIBLE);
                 initializeMediaSession();
-                initializePlayer(Uri.parse(steps.get(position).getVideoURL()));
+                mVideoUri = Uri.parse(steps.get(position).getVideoURL());
+                initializePlayer(mVideoUri);
 
             }
         }
@@ -205,6 +217,15 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
                     Util.getUserAgent(sContext, "Baking App"));
             MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
             mExoPlayer.prepare(mediaSource);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(mExoPlayer!=null){
+            mPlayerPosition = mExoPlayer.getCurrentPosition();
+            outState.putLong(EXOPLAYER_KEY, mPlayerPosition);
         }
     }
 
