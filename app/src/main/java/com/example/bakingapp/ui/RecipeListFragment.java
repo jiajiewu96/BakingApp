@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
@@ -25,6 +27,7 @@ import com.example.bakingapp.data.FavoritesViewModel;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.ui.adapters.RecipeListAdapter;
+import com.example.bakingapp.ui.fragmentInterfaces.CommonFragmentInterfaces;
 import com.example.bakingapp.utils.Consts;
 
 import java.util.ArrayList;
@@ -39,6 +42,8 @@ import static com.example.bakingapp.utils.Consts.RECIPE_LIST_FRAGMENT_KEY;
 
 public class RecipeListFragment extends Fragment implements RecipeListAdapter.RecipeClickHandler {
 
+    private CommonFragmentInterfaces mTitleInterface;
+
     private RecipeListAdapter mRecipeListAdapter;
     private TextView mErrorTextView;
     private int flag;
@@ -47,6 +52,8 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
     OnRecipeListClickListener mRecipeListCallback;
     private TextView mEmptyTextView;
+    private ActionBar mActionBar;
+    private Context mContext;
 
     @Override
     public void onRecipeClick(Recipe recipe) {
@@ -74,10 +81,12 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         super.onAttach(context);
         try{
             mRecipeListCallback = (OnRecipeListClickListener) context;
+            mTitleInterface = (CommonFragmentInterfaces) context;
         } catch (ClassCastException e){
             throw new ClassCastException(context.toString() +
                      " Must implement OnRecipeClickListener");
         }
+        mContext = getContext();
     }
 
     @Override
@@ -93,11 +102,21 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mRecipeListCallback = null;
+        mTitleInterface = null;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
+        mActionBar = ((AppCompatActivity) mFragmentActivity).getSupportActionBar();
+
+        mTitleInterface.onFragmentChangedListener(mContext.getString(R.string.app_name));
 
         RecyclerView recipeListRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_view_recipe_list);
         mErrorTextView = rootView.findViewById(R.id.tv_error);
@@ -111,8 +130,10 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
 
         if(flag == Consts.FLAG_RECIPES) {
             loadRecipesFromJSON();
+
         } else if (flag == Consts.FLAG_FAVORITES){
             loadFavoritesFromDB();
+
         }
 
         return rootView;

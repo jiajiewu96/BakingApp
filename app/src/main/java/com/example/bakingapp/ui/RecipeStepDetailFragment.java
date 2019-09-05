@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -60,6 +62,8 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
     private PlaybackStateCompat.Builder mStateBuilder;
     private ArrayList<Step> steps;
     private int position;
+    private FragmentActivity mFragmentActivity;
+
 
     private Context sContext;
     private TextView mLongStepTextView;
@@ -68,6 +72,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
 
     OnStepChangeClickListener mCallback;
     private FragmentActivity mActivity;
+    private ActionBar mActionBar;
 
     public interface OnStepChangeClickListener {
         void onStepChanged(int flag, int position, ArrayList<Step> steps);
@@ -97,6 +102,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFragmentActivity = getActivity();
 
     }
 
@@ -104,7 +110,13 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_step_detail, container, false);
+        mActionBar = ((AppCompatActivity) mFragmentActivity).getSupportActionBar();
 
+        if(getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            mActionBar.hide();
+        }else{
+            mActionBar.show();
+        }
         mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
         mLongStepTextView = (TextView) rootView.findViewById(R.id.tv_step_long);
         mNextButton = (ImageView) rootView.findViewById(R.id.iv_next_step);

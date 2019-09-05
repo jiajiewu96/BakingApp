@@ -18,6 +18,7 @@ import com.example.bakingapp.R;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
 import com.example.bakingapp.ui.adapters.TabAdapter;
+import com.example.bakingapp.ui.fragmentInterfaces.CommonFragmentInterfaces;
 import com.example.bakingapp.widget.IngredientWidgetService;
 import com.google.android.material.tabs.TabLayout;
 
@@ -33,7 +34,7 @@ import static com.example.bakingapp.utils.Consts.STEP_KEY;
 
 public class MainActivity extends AppCompatActivity implements RecipeListFragment.OnRecipeListClickListener,
         RecipeStepListFragment.OnStepClickedListener,
-        RecipeStepDetailFragment.OnStepChangeClickListener {
+        RecipeStepDetailFragment.OnStepChangeClickListener, CommonFragmentInterfaces {
 
     private final FragmentManager mFragmentManager = getSupportFragmentManager();
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -113,5 +114,18 @@ public class MainActivity extends AppCompatActivity implements RecipeListFragmen
                     .addToBackStack(RECIPE_STEP_DETAIL_TRANSACTION_NAME)
                     .commit();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(mFragmentManager.getBackStackEntryCount() == 0){
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+        }
+    }
+
+    @Override
+    public void onFragmentChangedListener(String title) {
+        getSupportActionBar().setTitle(title);
     }
 }

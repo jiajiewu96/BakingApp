@@ -25,12 +25,13 @@ import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
 import com.example.bakingapp.ui.adapters.IngredientsListAdapter;
 import com.example.bakingapp.ui.adapters.StepAdapter;
+import com.example.bakingapp.ui.fragmentInterfaces.CommonFragmentInterfaces;
 import com.example.bakingapp.utils.Consts;
 
 import java.util.ArrayList;
 
 public class RecipeStepListFragment extends Fragment implements StepAdapter.StepSelectedListener {
-
+    private CommonFragmentInterfaces mTitleInterface;
     private IngredientsListAdapter mIngredientsListAdapter;
     private StepAdapter mStepAdapter;
     private ImageView mFavoriteImageView;
@@ -39,6 +40,7 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
 
     private OnStepClickedListener onStepClickedListener;
     private Recipe mRecipe;
+    private Context mContext;
 
     public interface OnStepClickedListener {
         void onStepClicked(ArrayList<Step> steps, int position);
@@ -53,10 +55,12 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
         super.onAttach(context);
         try{
             onStepClickedListener = (OnStepClickedListener) context;
+            mTitleInterface = (CommonFragmentInterfaces) context;
         } catch (ClassCastException e){
             throw new ClassCastException(context.toString() +
                     " Must implement onStepClickedListener");
         }
+        mContext = getContext();
     }
 
     @Override
@@ -73,9 +77,7 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
         View rootView = inflater.inflate(R.layout.fragment_recipe_steps, container, false);
         ActionBar actionBar = ((AppCompatActivity) mFragmentActivity).getSupportActionBar();
 
-
         mFavoriteImageView = rootView.findViewById(R.id.iv_favorite_button);
-
 
         mFavoriteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +111,8 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
         Bundle bundle = getArguments();
         if(bundle!=null){
             mRecipe = (Recipe) bundle.getParcelable(Consts.RECIPE_KEY);
-            actionBar.setTitle(mRecipe.getName());
+            actionBar.show();
+            mTitleInterface.onFragmentChangedListener(mRecipe.getName());
             mIngredientsListAdapter.setIngredients(mRecipe.getIngredients());
             mStepAdapter.setSteps(mRecipe.getSteps());
         }
