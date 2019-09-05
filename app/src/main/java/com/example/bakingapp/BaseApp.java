@@ -13,4 +13,8 @@ public class BaseApp extends Application {
     public RecipeRepository getRepository(){
         return RecipeRepository.getInstance(getDatabase());
     }
+
+    public int screenWidthInDp(){
+        return this.getResources().getConfiguration().smallestScreenWidthDp;
+    }
 }

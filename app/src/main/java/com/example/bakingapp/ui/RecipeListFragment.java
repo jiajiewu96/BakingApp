@@ -2,7 +2,10 @@ package com.example.bakingapp.ui;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,6 +58,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
     private TextView mEmptyTextView;
     private ActionBar mActionBar;
     private Context mContext;
+    private int mSw;
 
     @Override
     public void onRecipeClick(Recipe recipe) {
@@ -87,6 +92,7 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
                      " Must implement OnRecipeClickListener");
         }
         mContext = getContext();
+        mSw = ((BaseApp) getActivity().getApplication()).screenWidthInDp();
     }
 
     @Override
@@ -100,6 +106,8 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         if(mFragmentActivity == null) {
             mFragmentActivity = getActivity();
         }
+
+
     }
 
     @Override
@@ -121,10 +129,13 @@ public class RecipeListFragment extends Fragment implements RecipeListAdapter.Re
         RecyclerView recipeListRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_view_recipe_list);
         mErrorTextView = rootView.findViewById(R.id.tv_error);
         mEmptyTextView = rootView.findViewById(R.id.tv_empty);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recipeListRecycler.setLayoutManager(layoutManager);
-
+        if(mSw >= 600){
+            GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+            recipeListRecycler.setLayoutManager(layoutManager);
+        }else {
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            recipeListRecycler.setLayoutManager(layoutManager);
+        }
         mRecipeListAdapter = new RecipeListAdapter(this);
         recipeListRecycler.setAdapter(mRecipeListAdapter);
 
