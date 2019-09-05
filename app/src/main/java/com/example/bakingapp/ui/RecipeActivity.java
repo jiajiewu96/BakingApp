@@ -58,8 +58,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepListF
         } else {
             mFragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .add(R.id.recipe_list_container, recipeStepListFragment)
-                    .addToBackStack(RECIPE_STEP_TRANSACTION_NAME)
+                    .add(R.id.recipe_container, recipeStepListFragment)
                     .commit();
         }
     }
