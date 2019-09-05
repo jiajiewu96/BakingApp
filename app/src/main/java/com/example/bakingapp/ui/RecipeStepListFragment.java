@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -69,6 +71,8 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_steps, container, false);
+        ActionBar actionBar = ((AppCompatActivity) mFragmentActivity).getSupportActionBar();
+
 
         mFavoriteImageView = rootView.findViewById(R.id.iv_favorite_button);
 
@@ -105,6 +109,7 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
         Bundle bundle = getArguments();
         if(bundle!=null){
             mRecipe = (Recipe) bundle.getParcelable(Consts.RECIPE_KEY);
+            actionBar.setTitle(mRecipe.getName());
             mIngredientsListAdapter.setIngredients(mRecipe.getIngredients());
             mStepAdapter.setSteps(mRecipe.getSteps());
         }

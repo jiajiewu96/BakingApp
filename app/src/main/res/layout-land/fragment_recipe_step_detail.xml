@@ -39,6 +39,7 @@
             tools:layout_editor_absoluteY="411dp" />
 
         <LinearLayout
+            android:gravity="center|bottom"
             android:id="@+id/nav_layout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
