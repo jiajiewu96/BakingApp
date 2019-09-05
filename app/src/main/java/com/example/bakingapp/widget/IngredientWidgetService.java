@@ -19,7 +19,7 @@ import java.util.List;
 public class IngredientWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new IngredientsWidgetItemFactory(getApplicationContext(), intent);
+        return new IngredientsWidgetItemFactory(this.getApplicationContext(), intent);
     }
     class IngredientsWidgetItemFactory implements RemoteViewsFactory{
         private Context mContext;
@@ -36,23 +36,23 @@ public class IngredientWidgetService extends RemoteViewsService {
         @Override
         public void onCreate() {
             mFavoritesDatabase = FavoritesDatabase.getInstance(mContext);
+        }
+
+        @Override
+        public void onDataSetChanged() {
             AppExecutors.getInstance().diskIO().execute(new Runnable() {
                 @Override
                 public void run() {
                     mRecipes = mFavoritesDatabase.favoritesDao().loadRecipesForWidget();
                 }
             });
-
-        }
-
-        @Override
-        public void onDataSetChanged() {
-            mRecipes = mFavoritesDatabase.favoritesDao().loadRecipesForWidget();
         }
 
         @Override
         public void onDestroy() {
             mFavoritesDatabase.close();
+            mRecipes.clear();
+            mIngredients.clear();
         }
 
         @Override
@@ -66,8 +66,10 @@ public class IngredientWidgetService extends RemoteViewsService {
 
             mIngredients = mRecipes.get(i).getIngredients();
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_ingredients_widget);
-            views.setTextViewText(R.id.tv_widget_ingredient, mIngredients.get(i).getIngredient());
-            views.setTextViewText(R.id.tv_widget_quantity, Float.toString(mIngredients.get(i).getQuantity()));
+            String ingredientString = mIngredients.get(i).getIngredient();
+            String quantityString = Float.toString(mIngredients.get(i).getQuantity()) + mIngredients.get(i).getMeasure();
+            views.setTextViewText(R.id.tv_widget_ingredient, ingredientString);
+            views.setTextViewText(R.id.tv_widget_quantity, quantityString);
             return views;
         }
 
@@ -78,7 +80,7 @@ public class IngredientWidgetService extends RemoteViewsService {
 
         @Override
         public int getViewTypeCount() {
-            return 1;
+            return 3;
         }
 
         @Override

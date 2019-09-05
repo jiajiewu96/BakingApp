@@ -1,6 +1,7 @@
 package com.example.bakingapp.ui;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -14,7 +15,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 
 import com.example.bakingapp.R;
@@ -64,6 +67,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
     private ImageView mPreviousButton;
 
     OnStepChangeClickListener mCallback;
+    private FragmentActivity mActivity;
 
     public interface OnStepChangeClickListener {
         void onStepChanged(int flag, int position, ArrayList<Step> steps);
@@ -81,12 +85,19 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         if (sContext == null) {
             sContext = context;
         }
+        mActivity = getActivity();
         try {
             mCallback = (OnStepChangeClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement OnStepChangeClickListener");
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     @Nullable
