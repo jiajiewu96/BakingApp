@@ -2,6 +2,8 @@ package com.example.bakingapp.ui;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.example.bakingapp.ui.adapters.IngredientsListAdapter;
 import com.example.bakingapp.ui.adapters.StepAdapter;
 import com.example.bakingapp.ui.fragmentInterfaces.CommonFragmentInterfaces;
 import com.example.bakingapp.utils.Consts;
+import com.example.bakingapp.widget.IngredientsWidgetProvider;
 
 import java.util.ArrayList;
 
@@ -41,6 +44,7 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
     private OnStepClickedListener onStepClickedListener;
     private Recipe mRecipe;
     private Context mContext;
+    private ImageView mPinImageView;
 
     public interface OnStepClickedListener {
         void onStepClicked(ArrayList<Step> steps, int position);
@@ -78,6 +82,33 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
         ActionBar actionBar = ((AppCompatActivity) mFragmentActivity).getSupportActionBar();
 
         mFavoriteImageView = rootView.findViewById(R.id.iv_favorite_button);
+        mPinImageView = rootView.findViewById(R.id.iv_pin_button);
+
+        setButtonOnClicks();
+
+        setupRecyclerViews(rootView);
+
+        Bundle bundle = getArguments();
+        if(bundle!=null){
+            mRecipe = (Recipe) bundle.getParcelable(Consts.RECIPE_KEY);
+            actionBar.show();
+            mTitleInterface.onFragmentChangedListener(mRecipe.getName());
+            mIngredientsListAdapter.setIngredients(mRecipe.getIngredients());
+            mStepAdapter.setSteps(mRecipe.getSteps());
+        }
+        checkForRecipeInDB();
+        return rootView;
+    }
+
+    private void setButtonOnClicks() {
+
+        mPinImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), IngredientsWidgetProvider.class);
+
+            }
+        });
 
         mFavoriteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,19 +136,6 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
                 }
             }
         });
-
-        setupRecyclerViews(rootView);
-
-        Bundle bundle = getArguments();
-        if(bundle!=null){
-            mRecipe = (Recipe) bundle.getParcelable(Consts.RECIPE_KEY);
-            actionBar.show();
-            mTitleInterface.onFragmentChangedListener(mRecipe.getName());
-            mIngredientsListAdapter.setIngredients(mRecipe.getIngredients());
-            mStepAdapter.setSteps(mRecipe.getSteps());
-        }
-        checkForRecipeInDB();
-        return rootView;
     }
 
     private void checkForRecipeInDB() {
