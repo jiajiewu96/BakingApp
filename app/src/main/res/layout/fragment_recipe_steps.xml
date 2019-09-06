@@ -23,18 +23,29 @@
             android:layout_marginRight="4dp"
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp"
-            app:contentPadding="2dp"
+            app:contentPadding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/iv_favorite_button"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                app:srcCompat="@drawable/ic_unfavorite"
-                />
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/iv_pin_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_pin"
+                    android:layout_marginRight="16dp"/>
+                <ImageView
+                    android:id="@+id/iv_favorite_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    app:srcCompat="@drawable/ic_unfavorite" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,7 +82,7 @@
             android:layout_marginRight="4dp"
             app:cardCornerRadius="4dp"
             app:cardElevation="4dp"
-            app:contentPadding="2dp"
+            app:contentPadding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ingredients_card">
