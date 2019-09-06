@@ -62,7 +62,6 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepListF
             mFragmentManager.beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .add(R.id.recipe_container, recipeStepListFragment)
-                    .addToBackStack(RECIPE_STEP_TRANSACTION_NAME)
                     .commit();
         }
         Log.d("RecipeActivity", "RecipeActivity" + String.valueOf(mFragmentManager.getBackStackEntryCount()));

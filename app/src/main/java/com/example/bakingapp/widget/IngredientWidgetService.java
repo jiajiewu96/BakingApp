@@ -3,13 +3,13 @@ package com.example.bakingapp.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.bakingapp.AppExecutors;
 import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
-import com.example.bakingapp.data.FavoritesDatabase;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Ingredients;
 import com.example.bakingapp.model.Recipe;
@@ -22,18 +22,21 @@ public class IngredientWidgetService extends RemoteViewsService {
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new IngredientsWidgetItemFactory(this.getApplicationContext(), intent);
     }
-    class IngredientsWidgetItemFactory implements RemoteViewsFactory{
+
+    class IngredientsWidgetItemFactory implements RemoteViewsFactory {
+        private final String TAG = "TAG";
         private Context mContext;
         private int mAppWidgetId;
-        private List<Recipe> mRecipes;
+        private List<Recipe> mRecipes = new ArrayList<>();
         private ArrayList<Ingredients> mIngredients = new ArrayList<>();
         private RecipeRepository mRecipeRepository;
 
-        IngredientsWidgetItemFactory(Context context, Intent intent){
+        IngredientsWidgetItemFactory(Context context, Intent intent) {
             mContext = context;
             this.mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
+
         @Override
         public void onCreate() {
             mRecipeRepository = ((BaseApp) getApplication()).getRepository();
@@ -41,29 +44,31 @@ public class IngredientWidgetService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    mRecipes = mRecipeRepository.loadRecipesFromWidget();
-                }
-            });
+            mRecipes = mRecipeRepository.loadRecipesFromWidget();
         }
 
         @Override
         public void onDestroy() {
             mRecipeRepository = null;
-            mRecipes.clear();
+            if (mRecipes != null) {
+                mRecipes.clear();
+            }
             mIngredients.clear();
         }
 
         @Override
         public int getCount() {
-            return mIngredients.size();
+            Log.d(TAG, "getCount: " + mRecipes.toString());
+            if (mRecipes != null) {
+                return mRecipes.size();
+            } else {
+                return 0;
+            }
         }
 
         @Override
         public RemoteViews getViewAt(int i) {
-            if(mRecipes == null || mRecipes.size() == 0) return null;
+            if (mRecipes == null || mRecipes.size() == 0) return null;
 
             mIngredients = mRecipes.get(i).getIngredients();
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_ingredients_widget);

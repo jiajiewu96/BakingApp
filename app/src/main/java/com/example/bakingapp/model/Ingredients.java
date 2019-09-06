@@ -15,7 +15,7 @@ public class Ingredients implements Parcelable {
         ingredient = in.readString();
     }
 
-    public Ingredients(int quantity, String measure, String ingredient){
+    public Ingredients(int quantity, String measure, String ingredient) {
         this.quantity = quantity;
         this.measure = measure;
         this.ingredient = ingredient;
@@ -59,21 +59,24 @@ public class Ingredients implements Parcelable {
 
     private String makeQuantity(String measure) {
         String measureConversion;
-        switch (measure){
-            case("G"):
+        switch (measure) {
+            case ("G"):
                 measureConversion = " Grams";
                 break;
-            case("TBLSP"):
+            case ("TBLSP"):
                 measureConversion = " Table Spoons";
                 break;
-            case("TSP"):
-                measureConversion =  " Teaspoons";
+            case ("TSP"):
+                measureConversion = " Teaspoons";
                 break;
-            case("K"):
+            case ("K"):
                 measureConversion = " Kilogram";
                 break;
             case ("CUP"):
                 measureConversion = " Cups";
+                break;
+            case ("OZ"):
+                measureConversion = "Ounces";
                 break;
             default:
                 measureConversion = "";
