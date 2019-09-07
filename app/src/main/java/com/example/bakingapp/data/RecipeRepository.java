@@ -49,7 +49,7 @@ public class RecipeRepository {
     public boolean checkForRecipeInDb(Recipe recipe) {
         return mDatabase.favoritesDao().checkForRecipe(recipe.getId()) != null;
     }
-    public List<Recipe> loadRecipesFromWidget(){
-        return mDatabase.favoritesDao().loadRecipesForWidget();
+    public Recipe loadRecipeForWidgetById(int id){
+        return mDatabase.favoritesDao().checkForRecipe(id);
     }
 }

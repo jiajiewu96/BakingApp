@@ -7,16 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.ui.MainActivity;
+import com.example.bakingapp.utils.Consts;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class IngredientsWidgetProvider extends AppWidgetProvider {
+    private static final String TAG = IngredientsWidgetProvider.class.getSimpleName();
 
     public static final String ACTION_UPDATE = "com.example.bakingapp.actionUpdate";
 
@@ -26,8 +29,10 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         Intent serviceIntent = new Intent(context, IngredientWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        context.startService(serviceIntent);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget);
+        //setIntent for clicking the view
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
 
@@ -51,8 +56,19 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(ACTION_UPDATE.equals(intent.getAction())){
+        Log.d(TAG, "Widget onReceive: called");
+
+        if(AppWidgetManager.ACTION_APPWIDGET_UPDATE.equals(intent.getAction())){
+
+            Intent serviceIntent = new Intent(context, IngredientWidgetService.class);
             int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            int recipeId = intent.getIntExtra(Consts.WIDGET_RECIPE_ID_KEY, Consts.WIDGET_RECIPE_DEFAULT_ID);
+            serviceIntent.putExtra(Consts.WIDGET_RECIPE_ID_KEY, recipeId);
+            Log.d(TAG, "Widget onReceive: received recipeId" + recipeId);
+            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+            context.startService(serviceIntent);
+
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.ingredient_widget_list);
         }

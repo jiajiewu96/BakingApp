@@ -9,6 +9,9 @@ public class Consts {
     public static final int FLAG_IS_FAVORITED = 3002;
     public static final int FLAG_IS_NOT_FAVORITED = 3004;
 
+    public static final int WIDGET_RECIPE_DEFAULT_ID = -1;
+    public static final String WIDGET_RECIPE_ID_KEY = "com.android.bakingapp.widget.RECIPE_ID_KEY";
+
     public static final String PLAY_WHEN_READY_KEY = "com.android.bakingapp.PLAYWHENREADY";
     public static final String EXOPLAYER_KEY = "com.android.bakingapp.PLAYER_KEY";
     public static final String RECIPE_LIST_FRAGMENT_KEY = "com.example.bakingapp.RECIPE_LIST_FRAGMENT_KEY";

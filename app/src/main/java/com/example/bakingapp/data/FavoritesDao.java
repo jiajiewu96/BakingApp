@@ -28,6 +28,4 @@ public interface FavoritesDao {
     @Query("SELECT * FROM recipes WHERE id = :queryId")
     Recipe checkForRecipe(int queryId);
 
-    @Query("SELECT * FROM recipes")
-    List<Recipe> loadRecipesForWidget();
 }

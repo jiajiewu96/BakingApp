@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -106,7 +108,11 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), IngredientsWidgetProvider.class);
-
+                int recipeId = mRecipe.getId();
+                intent.putExtra(Consts.WIDGET_RECIPE_ID_KEY, recipeId);
+                intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+                mContext.sendBroadcast(intent);
+                Toast.makeText(mFragmentActivity, "Set " + mRecipe.getName() + " to the Widget" , Toast.LENGTH_SHORT).show();
             }
         });
 
