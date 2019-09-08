@@ -3,6 +3,7 @@ package com.example.bakingapp.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -33,7 +34,7 @@ public class IngredientWidgetService extends RemoteViewsService {
 
         IngredientsWidgetItemFactory(Context context, Intent intent) {
             mContext = context;
-            this.mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+            mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
             mRecipeId = intent.getIntExtra(Consts.WIDGET_RECIPE_ID_KEY, Consts.WIDGET_RECIPE_DEFAULT_ID);
             Log.d(TAG, "Widget recipeId: "+ mRecipeId);
@@ -46,6 +47,9 @@ public class IngredientWidgetService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
+            Bundle bundle = AppWidgetManager.getInstance(mContext).getAppWidgetOptions(mAppWidgetId);
+            mRecipeId = bundle.getInt(Consts.WIDGET_RECIPE_ID_KEY, Consts.WIDGET_RECIPE_DEFAULT_ID);
+            Log.d(TAG, "Widget onDataSetChanged: called with id: " + mRecipeId);
             if(mRecipeId == Consts.WIDGET_RECIPE_DEFAULT_ID){
                 return;
             }

@@ -1,8 +1,6 @@
 package com.example.bakingapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.appwidget.AppWidgetManager;
@@ -11,24 +9,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
-import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
 import com.example.bakingapp.model.Recipe;
-import com.example.bakingapp.model.Step;
 import com.example.bakingapp.ui.adapters.TabAdapter;
 import com.example.bakingapp.ui.fragmentInterfaces.CommonFragmentInterfaces;
 import com.example.bakingapp.widget.IngredientWidgetService;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
-
-import static com.example.bakingapp.utils.Consts.FLAG_NEXT;
-import static com.example.bakingapp.utils.Consts.FLAG_PREVIOUS;
-import static com.example.bakingapp.utils.Consts.POSITION_KEY;
 import static com.example.bakingapp.utils.Consts.RECIPE_KEY;
-import static com.example.bakingapp.utils.Consts.RECIPE_STEP_DETAIL_TRANSACTION_NAME;
-import static com.example.bakingapp.utils.Consts.RECIPE_STEP_TRANSACTION_NAME;
-import static com.example.bakingapp.utils.Consts.STEP_KEY;
+
 
 public class MainActivity extends AppCompatActivity implements RecipeListFragment.OnRecipeListClickListener,
         CommonFragmentInterfaces {
