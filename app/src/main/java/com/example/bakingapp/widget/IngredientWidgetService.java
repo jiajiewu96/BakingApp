@@ -35,11 +35,6 @@ public class IngredientWidgetService extends RemoteViewsService {
             mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
             mRecipe = intent.getParcelableExtra(Consts.WIDGET_RECIPE_KEY);
-            if (mRecipe != null) {
-                Log.d(TAG, "Widget IngredientsWidgetItemFactory got recipe with id: " + mRecipe.getId());
-            }else{
-                Log.d(TAG, "Widget IngredientsWidgetItemFactory recipe is null ");
-            }
         }
 
         @Override
