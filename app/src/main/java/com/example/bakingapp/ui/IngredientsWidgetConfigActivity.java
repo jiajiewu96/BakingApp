@@ -119,6 +119,7 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity implement
         views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
         views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
         appWidgetManager.updateAppWidget(mAppwidgetId, views);
+        appWidgetManager.notifyAppWidgetViewDataChanged(mAppwidgetId ,R.id.ingredient_widget_list);
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppwidgetId);

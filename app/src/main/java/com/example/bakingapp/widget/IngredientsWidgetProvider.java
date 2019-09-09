@@ -41,7 +41,6 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.ingredient_widget_list);
     }
 
     @Override
