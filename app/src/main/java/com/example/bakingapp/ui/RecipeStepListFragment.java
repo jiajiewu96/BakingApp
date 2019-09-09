@@ -82,7 +82,6 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
         ActionBar actionBar = ((AppCompatActivity) mFragmentActivity).getSupportActionBar();
 
         mFavoriteImageView = rootView.findViewById(R.id.iv_favorite_button);
-        mPinImageView = rootView.findViewById(R.id.iv_pin_button);
 
         setButtonOnClicks();
 
@@ -101,19 +100,6 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
     }
 
     private void setButtonOnClicks() {
-
-        mPinImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), IngredientsWidgetProvider.class);
-                int recipeId = mRecipe.getId();
-                intent.putExtra(Consts.WIDGET_RECIPE_ID_KEY, recipeId);
-                intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-                mContext.sendBroadcast(intent);
-                Toast.makeText(mFragmentActivity, "Set " + mRecipe.getName() + " to the Widget" , Toast.LENGTH_SHORT).show();
-            }
-        });
-
         mFavoriteImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

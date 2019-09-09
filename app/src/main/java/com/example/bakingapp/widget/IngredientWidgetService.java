@@ -24,43 +24,38 @@ public class IngredientWidgetService extends RemoteViewsService {
     }
 
     class IngredientsWidgetItemFactory implements RemoteViewsFactory {
-        private final String TAG = "TAG";
+        private final String TAG = "IngredientWidgetService";
         private Context mContext;
         private int mAppWidgetId;
         private Recipe mRecipe;
         private ArrayList<Ingredients> mIngredients = new ArrayList<>();
-        private RecipeRepository mRecipeRepository;
-        private int mRecipeId;
 
         IngredientsWidgetItemFactory(Context context, Intent intent) {
             mContext = context;
             mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
-            mRecipeId = intent.getIntExtra(Consts.WIDGET_RECIPE_ID_KEY, Consts.WIDGET_RECIPE_DEFAULT_ID);
-            Log.d(TAG, "Widget recipeId: "+ mRecipeId);
+            mRecipe = intent.getParcelableExtra(Consts.WIDGET_RECIPE_KEY);
+            if (mRecipe != null) {
+                Log.d(TAG, "Widget IngredientsWidgetItemFactory got recipe with id: " + mRecipe.getId());
+            }else{
+                Log.d(TAG, "Widget IngredientsWidgetItemFactory recipe is null ");
+            }
         }
 
         @Override
         public void onCreate() {
-            mRecipeRepository = ((BaseApp) getApplication()).getRepository();
         }
 
         @Override
         public void onDataSetChanged() {
-            Bundle bundle = AppWidgetManager.getInstance(mContext).getAppWidgetOptions(mAppWidgetId);
-            mRecipeId = bundle.getInt(Consts.WIDGET_RECIPE_ID_KEY, Consts.WIDGET_RECIPE_DEFAULT_ID);
-            Log.d(TAG, "Widget onDataSetChanged: called with id: " + mRecipeId);
-            if(mRecipeId == Consts.WIDGET_RECIPE_DEFAULT_ID){
+            if (mRecipe == null) {
                 return;
             }
-            mRecipe = mRecipeRepository.loadRecipeForWidgetById(mRecipeId);
             mIngredients = mRecipe.getIngredients();
-            Log.d(TAG, "Widget onDataSetChanged: got " + mRecipe.getName() + " in " + IngredientWidgetService.class.getSimpleName());
         }
 
         @Override
         public void onDestroy() {
-            mRecipeRepository = null;
             mIngredients.clear();
         }
 
@@ -82,6 +77,7 @@ public class IngredientWidgetService extends RemoteViewsService {
             String quantityString = Float.toString(mIngredients.get(i).getQuantity()) + mIngredients.get(i).getMeasure();
             views.setTextViewText(R.id.tv_widget_ingredient, ingredientString);
             views.setTextViewText(R.id.tv_widget_quantity, quantityString);
+
             return views;
         }
 
