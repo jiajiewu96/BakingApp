@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import android.widget.Toast;
 
+import com.example.bakingapp.AppExecutors;
 import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.RecipeRepository;
@@ -28,23 +30,27 @@ public class IngredientWidgetService extends RemoteViewsService {
         private Context mContext;
         private int mAppWidgetId;
         private Recipe mRecipe;
+        private int mRecipeId;
         private ArrayList<Ingredients> mIngredients = new ArrayList<>();
+        private RecipeRepository mRecipeRepository;
 
         IngredientsWidgetItemFactory(Context context, Intent intent) {
             mContext = context;
             mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
             mRecipe = intent.getParcelableExtra(Consts.WIDGET_RECIPE_KEY);
+            mRecipeId = intent.getIntExtra(Consts.WIDGET_ID_KEY, -1);
         }
 
         @Override
         public void onCreate() {
-
+            mRecipeRepository = ((BaseApp) getApplication()).getRepository();
         }
 
 
         @Override
         public void onDataSetChanged() {
+            mRecipe = mRecipeRepository.loadRecipeForWidgetById(mRecipeId);
             if (mRecipe == null) {
                 return;
             }

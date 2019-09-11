@@ -112,21 +112,23 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity implement
 
         Intent serviceIntent = new Intent(this, IngredientWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppwidgetId);
-        serviceIntent.putExtra(Consts.WIDGET_RECIPE_KEY, recipe);
+        serviceIntent.putExtra(Consts.WIDGET_ID_KEY, recipe.getId());
+        serviceIntent.putExtra(Consts.WIDGET_RECIPE_NAME_KEY, recipe.getName());
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
         RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.ingredients_widget);
         views.setOnClickPendingIntent(R.id.ingredients_widget_layout, pendingIntent);
-//        views.setCharSequence(R.id.tv_widget_recipe_title, "setText", recipe.getName());
+        views.setCharSequence(R.id.tv_widget_recipe_title, "setText", recipe.getName());
         views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
         views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
         appWidgetManager.updateAppWidget(mAppwidgetId, views);
         appWidgetManager.notifyAppWidgetViewDataChanged(mAppwidgetId ,R.id.ingredient_widget_list);
 
-//        SharedPreferences prefs = getSharedPreferences(Consts.WIDGET_SHARED_PREFS, MODE_PRIVATE);
-//        SharedPreferences.Editor editor = prefs.edit();
-//        editor.putString(Consts.WIDGET_PREFS_KEY + mAppwidgetId ,recipe.getName());
-//        editor.apply();
+        SharedPreferences prefs = getSharedPreferences(Consts.WIDGET_SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(Consts.WIDGET_PREFS_KEY + mAppwidgetId ,recipe.getId());
+        editor.putString(Consts.WIDGET_PREFS_KEY + mAppwidgetId, recipe.getName());
+        editor.apply();
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppwidgetId);

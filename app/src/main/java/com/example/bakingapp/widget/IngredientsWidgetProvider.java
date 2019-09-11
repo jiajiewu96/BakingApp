@@ -30,17 +30,21 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
+        //get sharedprefs for recipe id
+        SharedPreferences preferences = context.getSharedPreferences(Consts.WIDGET_SHARED_PREFS, Context.MODE_PRIVATE);
+        int id = preferences.getInt(Consts.WIDGET_PREFS_KEY + appWidgetId, -1);
+        String recipeName = preferences.getString(Consts.WIDGET_RECIPE_NAME_KEY, "");
         //Start service for remoteAdapter
         Intent serviceIntent = new Intent(context, IngredientWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        serviceIntent.putExtra(Consts.WIDGET_ID_KEY, id);
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
-//        SharedPreferences preferences = context.getSharedPreferences(Consts.WIDGET_SHARED_PREFS, Context.MODE_PRIVATE);
-//        String recipeName = preferences.getString(Consts.WIDGET_PREFS_KEY + appWidgetId, "No recipe");
+
         //set remoteAdapterViews
+        views.setCharSequence(R.id.tv_widget_recipe_title, "setText", recipeName);
         views.setOnClickPendingIntent(R.id.ingredients_widget_layout, pendingIntent);
         views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
         views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
-//        views.setCharSequence(R.id.tv_widget_recipe_title, "setText", recipeName);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

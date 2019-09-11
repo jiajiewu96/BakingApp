@@ -76,7 +76,7 @@ public class Ingredients implements Parcelable {
                 measureConversion = " Cups";
                 break;
             case ("OZ"):
-                measureConversion = "Ounces";
+                measureConversion = " Ounces";
                 break;
             default:
                 measureConversion = "";
