@@ -10,6 +10,8 @@ public class Consts {
     public static final int FLAG_IS_NOT_FAVORITED = 3004;
 
     public static final String WIDGET_RECIPE_KEY = "com.android.bakingapp.widget.RECIPE_KEY";
+    public static final String WIDGET_SHARED_PREFS = "com.android.bakingapp.widget.prefs";
+    public static final String WIDGET_PREFS_KEY = "com.android.bakingapp.widget.keyButtonText";
 
     public static final String PLAY_WHEN_READY_KEY = "com.android.bakingapp.PLAYWHENREADY";
     public static final String EXOPLAYER_KEY = "com.android.bakingapp.PLAYER_KEY";

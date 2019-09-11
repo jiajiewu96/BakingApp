@@ -39,15 +39,16 @@ public class IngredientWidgetService extends RemoteViewsService {
 
         @Override
         public void onCreate() {
-            if (mRecipe == null) {
-                return;
-            }
-            mIngredients = mRecipe.getIngredients();
+
         }
 
 
         @Override
         public void onDataSetChanged() {
+            if (mRecipe == null) {
+                return;
+            }
+            mIngredients = mRecipe.getIngredients();
         }
 
 

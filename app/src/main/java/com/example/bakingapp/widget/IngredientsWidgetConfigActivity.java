@@ -1,4 +1,4 @@
-package com.example.bakingapp.ui;
+package com.example.bakingapp.widget;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -20,6 +20,7 @@ import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
+import com.example.bakingapp.ui.MainActivity;
 import com.example.bakingapp.ui.adapters.RecipeListAdapter;
 import com.example.bakingapp.utils.Consts;
 import com.example.bakingapp.widget.IngredientWidgetService;
@@ -116,10 +117,16 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity implement
 
         RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.ingredients_widget);
         views.setOnClickPendingIntent(R.id.ingredients_widget_layout, pendingIntent);
+//        views.setCharSequence(R.id.tv_widget_recipe_title, "setText", recipe.getName());
         views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
         views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
         appWidgetManager.updateAppWidget(mAppwidgetId, views);
         appWidgetManager.notifyAppWidgetViewDataChanged(mAppwidgetId ,R.id.ingredient_widget_list);
+
+//        SharedPreferences prefs = getSharedPreferences(Consts.WIDGET_SHARED_PREFS, MODE_PRIVATE);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString(Consts.WIDGET_PREFS_KEY + mAppwidgetId ,recipe.getName());
+//        editor.apply();
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppwidgetId);

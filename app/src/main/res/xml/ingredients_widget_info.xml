@@ -8,4 +8,4 @@
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen"
-    android:configure="com.example.bakingapp.ui.IngredientsWidgetConfigActivity"/>
+    android:configure="com.example.bakingapp.widget.IngredientsWidgetConfigActivity"/>

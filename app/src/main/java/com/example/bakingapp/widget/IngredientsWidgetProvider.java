@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,11 +34,13 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         Intent serviceIntent = new Intent(context, IngredientWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
-
+//        SharedPreferences preferences = context.getSharedPreferences(Consts.WIDGET_SHARED_PREFS, Context.MODE_PRIVATE);
+//        String recipeName = preferences.getString(Consts.WIDGET_PREFS_KEY + appWidgetId, "No recipe");
         //set remoteAdapterViews
         views.setOnClickPendingIntent(R.id.ingredients_widget_layout, pendingIntent);
         views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
         views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
+//        views.setCharSequence(R.id.tv_widget_recipe_title, "setText", recipeName);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
