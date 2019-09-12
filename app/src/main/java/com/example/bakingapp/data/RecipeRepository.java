@@ -38,7 +38,7 @@ public class RecipeRepository {
         return mDatabase.favoritesDao().loadAllRecipes();
     }
 
-    public void addRecipeToFavorites(Recipe recipe) {
+    public void addRecipeToDB(Recipe recipe) {
         mDatabase.favoritesDao().insertRecipe(recipe);
     }
 

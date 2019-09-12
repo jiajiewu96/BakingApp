@@ -12,7 +12,7 @@ public class Consts {
     public static final String WIDGET_RECIPE_KEY = "com.android.bakingapp.widget.RECIPE_KEY";
     public static final String WIDGET_SHARED_PREFS = "com.android.bakingapp.widget.prefs";
     public static final String WIDGET_PREFS_KEY = "com.android.bakingapp.widget.keyButtonText";
-    public static final String WIDGET_ID_KEY = "com.android.bakingapp.widget.RECIPE_ID";
+    public static final String WIDGET_RECIPE_ID_KEY = "com.android.bakingapp.widget.RECIPE_ID";
     public static final String WIDGET_RECIPE_NAME_KEY = "com.android.bakingapp.widget.RECIPE_NAME_KEY";
 
 

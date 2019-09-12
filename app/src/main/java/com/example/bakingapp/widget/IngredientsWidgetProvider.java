@@ -7,12 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.bakingapp.R;
-import com.example.bakingapp.ui.MainActivity;
+import com.example.bakingapp.ui.RecipeActivity;
 import com.example.bakingapp.utils.Consts;
 
 /**
@@ -26,28 +25,30 @@ public class IngredientsWidgetProvider extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget);
 
-        //setIntent for clicking the view
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-
         //get sharedprefs for recipe id
         SharedPreferences preferences = context.getSharedPreferences(Consts.WIDGET_SHARED_PREFS, Context.MODE_PRIVATE);
-        int id = preferences.getInt(Consts.WIDGET_PREFS_KEY + appWidgetId, -1);
-        String recipeName = preferences.getString(Consts.WIDGET_RECIPE_NAME_KEY, "");
+        int id = preferences.getInt(Consts.WIDGET_RECIPE_ID_KEY + appWidgetId, -1);
+        String recipeName = preferences.getString(Consts.WIDGET_RECIPE_NAME_KEY + appWidgetId, "");
+        Log.d(TAG, "updateAppWidget recipeID: " +id);
         //Start service for remoteAdapter
         Intent serviceIntent = new Intent(context, IngredientWidgetService.class);
         serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        serviceIntent.putExtra(Consts.WIDGET_ID_KEY, id);
+        serviceIntent.putExtra(Consts.WIDGET_RECIPE_ID_KEY + appWidgetId, id);
         serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
+        //Create pending intent template
+        Intent clickIntent = new Intent(context, RecipeActivity.class);
+        PendingIntent clickPendingIntent = PendingIntent.getActivity(context, 0, clickIntent, 0);
 
         //set remoteAdapterViews
         views.setCharSequence(R.id.tv_widget_recipe_title, "setText", recipeName);
-        views.setOnClickPendingIntent(R.id.ingredients_widget_layout, pendingIntent);
         views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
         views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
+        views.setPendingIntentTemplate(R.id.ingredient_widget_list, clickPendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.ingredient_widget_list);
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.util.List;
 
 @Dao
 public interface FavoritesDao {
-    @Query("SELECT * FROM recipes")
+    @Query("SELECT * FROM recipes WHERE favorite = 3002")
     LiveData<List<Recipe>> loadAllRecipes();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

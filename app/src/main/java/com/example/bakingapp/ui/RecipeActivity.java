@@ -23,6 +23,7 @@ import static com.example.bakingapp.utils.Consts.RECIPE_KEY;
 import static com.example.bakingapp.utils.Consts.RECIPE_STEP_DETAIL_TRANSACTION_NAME;
 import static com.example.bakingapp.utils.Consts.RECIPE_STEP_TRANSACTION_NAME;
 import static com.example.bakingapp.utils.Consts.STEP_KEY;
+import static com.example.bakingapp.utils.Consts.WIDGET_RECIPE_KEY;
 
 public class RecipeActivity extends AppCompatActivity implements RecipeStepListFragment.OnStepClickedListener,
         RecipeStepDetailFragment.OnStepChangeClickListener, CommonFragmentInterfaces {
@@ -42,6 +43,10 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepListF
             mRecipe = savedInstanceState.getParcelable(RECIPE_KEY);
         else if (getIntent().getExtras() != null) {
             mRecipe = getIntent().getExtras().getParcelable(RECIPE_KEY);
+            //If recipe is still null try to get it from WIDGET recipe
+            if(mRecipe == null){
+                mRecipe = getIntent().getExtras().getParcelable(WIDGET_RECIPE_KEY);
+            }
         }
         bundle.putParcelable(RECIPE_KEY, mRecipe);
         RecipeStepListFragment recipeStepListFragment = new RecipeStepListFragment();

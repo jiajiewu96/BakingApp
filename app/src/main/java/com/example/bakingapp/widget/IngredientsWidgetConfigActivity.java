@@ -12,18 +12,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import com.example.bakingapp.AppExecutors;
 import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.ui.MainActivity;
+import com.example.bakingapp.ui.RecipeActivity;
 import com.example.bakingapp.ui.adapters.RecipeListAdapter;
 import com.example.bakingapp.utils.Consts;
-import com.example.bakingapp.widget.IngredientWidgetService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class IngredientsWidgetConfigActivity extends AppCompatActivity implements  RecipeListAdapter.RecipeClickHandler {
+    private static final String TAG = IngredientsWidgetConfigActivity.class.getSimpleName();
     private int mSw;
     private RecipeListAdapter mRecipeListAdapter;
     private TextView mErrorTextView;
@@ -106,34 +109,57 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity implement
 
     @Override
     public void onRecipeClick(Recipe recipe) {
+        addRecipeToDb(recipe);
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         Intent serviceIntent = new Intent(this, IngredientWidgetService.class);
-        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppwidgetId);
-        serviceIntent.putExtra(Consts.WIDGET_ID_KEY, recipe.getId());
-        serviceIntent.putExtra(Consts.WIDGET_RECIPE_NAME_KEY, recipe.getName());
-        serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        setUpServiceIntent(recipe, serviceIntent);
 
-        RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.ingredients_widget);
-        views.setOnClickPendingIntent(R.id.ingredients_widget_layout, pendingIntent);
-        views.setCharSequence(R.id.tv_widget_recipe_title, "setText", recipe.getName());
-        views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
-        views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
-        appWidgetManager.updateAppWidget(mAppwidgetId, views);
-        appWidgetManager.notifyAppWidgetViewDataChanged(mAppwidgetId ,R.id.ingredient_widget_list);
+        setUpRemoteViews(recipe, appWidgetManager, serviceIntent);
 
-        SharedPreferences prefs = getSharedPreferences(Consts.WIDGET_SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(Consts.WIDGET_PREFS_KEY + mAppwidgetId ,recipe.getId());
-        editor.putString(Consts.WIDGET_PREFS_KEY + mAppwidgetId, recipe.getName());
-        editor.apply();
+        setSharedPrefs(recipe);
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppwidgetId);
         setResult(RESULT_OK, resultValue);
         finish();
+    }
+
+    private void addRecipeToDb(final Recipe recipe) {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                ((BaseApp) getApplication()).getRepository().addRecipeToDB(recipe);
+            }
+        });
+    }
+
+    private void setUpServiceIntent(Recipe recipe, Intent serviceIntent) {
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppwidgetId);
+        serviceIntent.putExtra(Consts.WIDGET_RECIPE_ID_KEY + mAppwidgetId, recipe.getId());
+        serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
+        Log.d(TAG, "onRecipeClick Recipeid: " + recipe.getId());
+    }
+
+    private void setUpRemoteViews(Recipe recipe, AppWidgetManager appWidgetManager, Intent serviceIntent) {
+        RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.ingredients_widget);
+        views.setCharSequence(R.id.tv_widget_recipe_title, "setText", recipe.getName());
+        views.setRemoteAdapter(R.id.ingredient_widget_list, serviceIntent);
+        views.setEmptyView(R.id.ingredient_widget_list, R.id.tv_widget_empty);
+
+        Intent clickIntent = new Intent(this, RecipeActivity.class);
+        PendingIntent clickPendingIntent = PendingIntent.getActivity(this, 0, clickIntent, 0);
+        views.setPendingIntentTemplate(R.id.ingredient_widget_list, clickPendingIntent);
+
+        appWidgetManager.updateAppWidget(mAppwidgetId, views);
+    }
+
+    private void setSharedPrefs(Recipe recipe) {
+        SharedPreferences prefs = getSharedPreferences(Consts.WIDGET_SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(Consts.WIDGET_RECIPE_ID_KEY + mAppwidgetId ,recipe.getId());
+        editor.putString(Consts.WIDGET_RECIPE_NAME_KEY + mAppwidgetId, recipe.getName());
+        editor.apply();
     }
 
 }

@@ -18,7 +18,6 @@ public class Recipe implements Parcelable {
     private ArrayList<Step> steps;
     private int servings;
     private String image;
-    @Ignore
     private int favorite;
 
     @Ignore
@@ -36,14 +35,14 @@ public class Recipe implements Parcelable {
 
     }
 
-    public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Step> steps, int servings, String image){
+    public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Step> steps, int servings, String image, int favorite){
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
         this.servings = servings;
         this.image = image;
-
+        this.favorite = favorite;
     }
 
     @Ignore

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
+    android:id="@+id/widget_parent_layout"
     android:orientation="vertical"
     android:padding="@dimen/widget_margin">
     <TextView
@@ -23,7 +24,6 @@
             android:id="@+id/ingredient_widget_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_widget_recipe_title"
             tools:listitem="@layout/item_ingredients_widget" />
 
         <TextView

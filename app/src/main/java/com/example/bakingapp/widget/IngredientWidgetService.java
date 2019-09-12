@@ -3,13 +3,10 @@ package com.example.bakingapp.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-import android.widget.Toast;
 
-import com.example.bakingapp.AppExecutors;
 import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.RecipeRepository;
@@ -38,8 +35,8 @@ public class IngredientWidgetService extends RemoteViewsService {
             mContext = context;
             mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
-            mRecipe = intent.getParcelableExtra(Consts.WIDGET_RECIPE_KEY);
-            mRecipeId = intent.getIntExtra(Consts.WIDGET_ID_KEY, -1);
+            mRecipeId = intent.getIntExtra(Consts.WIDGET_RECIPE_ID_KEY +mAppWidgetId, -1);
+            Log.d(TAG, "IngredientsWidgetItemFactory RecipeId: " + mRecipeId);
         }
 
         @Override
@@ -55,6 +52,7 @@ public class IngredientWidgetService extends RemoteViewsService {
                 return;
             }
             mIngredients = mRecipe.getIngredients();
+            Log.d(TAG, "onDataSetChanged recipeID: " + mRecipe.getId());
         }
 
 
@@ -81,6 +79,10 @@ public class IngredientWidgetService extends RemoteViewsService {
             String quantityString = Float.toString(mIngredients.get(i).getQuantity()) + mIngredients.get(i).getMeasure();
             views.setTextViewText(R.id.tv_widget_ingredient, ingredientString);
             views.setTextViewText(R.id.tv_widget_quantity, quantityString);
+
+            Intent fillIntent = new Intent();
+            fillIntent.putExtra(Consts.WIDGET_RECIPE_KEY, mRecipe);
+            views.setOnClickFillInIntent(R.id.item_ingredients_widget_layout, fillIntent);
 
             return views;
         }
