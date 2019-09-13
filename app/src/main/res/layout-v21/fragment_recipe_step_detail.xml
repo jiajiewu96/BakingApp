@@ -49,6 +49,7 @@
             android:layout_weight="1"
             android:alpha=".8"
             android:background="@drawable/item_selector"
+            android:elevation="2dp"
             app:srcCompat="@drawable/ic_previous" />
 
         <ImageView
@@ -58,6 +59,7 @@
             android:layout_weight="1"
             android:alpha=".8"
             android:background="@drawable/item_selector"
+            android:elevation="2dp"
             app:srcCompat="@drawable/ic_next" />
     </LinearLayout>
 
