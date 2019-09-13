@@ -17,7 +17,12 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RecipeActivity" />
+        <activity android:name=".ui.RecipeActivity"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.MainActivity"/>
+        </activity>
 
         <receiver android:name=".widget.IngredientsWidgetProvider">
             <intent-filter>
