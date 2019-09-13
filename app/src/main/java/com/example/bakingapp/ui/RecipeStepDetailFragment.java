@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,9 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-
 import com.example.bakingapp.R;
-import com.example.bakingapp.model.Recipe;
 import com.example.bakingapp.model.Step;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -32,7 +29,6 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
@@ -40,7 +36,6 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -122,10 +117,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         }else{
             mActionBar.show();
         }
-        mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
-        mLongStepTextView = (TextView) rootView.findViewById(R.id.tv_step_long);
-        mNextButton = (ImageView) rootView.findViewById(R.id.iv_next_step);
-        mPreviousButton = (ImageView) rootView.findViewById(R.id.iv_previous_step);
+        findViews(rootView);
 
         Bundle bundle = null;
 
@@ -133,6 +125,12 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
             bundle = getArguments();
             steps = bundle.getParcelableArrayList(STEP_KEY);
             position = bundle.getInt(POSITION_KEY);
+            if(position == 0){
+                mPreviousButton.setImageAlpha(30);
+            }
+            if (position == steps.size()-1){
+                mNextButton.setImageAlpha(30);
+            }
         }
 
 
@@ -148,6 +146,13 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         setupStepNavigation();
 
         return rootView;
+    }
+
+    private void findViews(View rootView) {
+        mPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.player_view);
+        mLongStepTextView = (TextView) rootView.findViewById(R.id.tv_step_long);
+        mNextButton = (ImageView) rootView.findViewById(R.id.iv_next_step);
+        mPreviousButton = (ImageView) rootView.findViewById(R.id.iv_previous_step);
     }
 
     private void setupStepNavigation() {
