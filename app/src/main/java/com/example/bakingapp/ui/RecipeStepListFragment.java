@@ -1,14 +1,11 @@
 package com.example.bakingapp.ui;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +26,6 @@ import com.example.bakingapp.ui.adapters.IngredientsListAdapter;
 import com.example.bakingapp.ui.adapters.StepAdapter;
 import com.example.bakingapp.ui.fragmentInterfaces.CommonFragmentInterfaces;
 import com.example.bakingapp.utils.Consts;
-import com.example.bakingapp.widget.IngredientsWidgetProvider;
 
 import java.util.ArrayList;
 
@@ -132,12 +128,22 @@ public class RecipeStepListFragment extends Fragment implements StepAdapter.Step
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                if(mFavoritesViewModel.checkIfRecipeInDb(mRecipe)){
-                    mRecipe.setFavorite(Consts.FLAG_IS_FAVORITED);
-                    setFavoriteSelectedImage();
+                if(mRecipe.getWidget() == Consts.FLAG_IS_WIDGET){
+                    if(!mFavoritesViewModel.checkIfRecipeInDb(mRecipe)){
+                        mRecipe.setFavorite(Consts.FLAG_IS_FAVORITED);
+                        setFavoriteSelectedImage();
+                    }else{
+                        mRecipe.setFavorite(Consts.FLAG_IS_NOT_FAVORITED);
+                        setFavoriteUnselectedImage();
+                    }
                 }else{
-                    mRecipe.setFavorite(Consts.FLAG_IS_NOT_FAVORITED);
-                    setFavoriteUnselectedImage();
+                    if(mFavoritesViewModel.checkIfRecipeInDb(mRecipe)){
+                        mRecipe.setFavorite(Consts.FLAG_IS_FAVORITED);
+                        setFavoriteSelectedImage();
+                    }else{
+                        mRecipe.setFavorite(Consts.FLAG_IS_NOT_FAVORITED);
+                        setFavoriteUnselectedImage();
+                    }
                 }
             }
         });
