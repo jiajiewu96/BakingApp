@@ -7,6 +7,53 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/roboto_mono</item>
+        <item name="android:textColor">@color/primaryText</item>
     </style>
-
+    <style name="ErrorStyle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/error</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+    <style name="RecipeTitleTextStyle">
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_marginStart">@dimen/base_margin</item>
+        <item name="android:layout_marginLeft">@dimen/base_margin</item>
+        <item name="android:layout_marginRight">@dimen/base_margin</item>
+        <item name="android:layout_marginEnd">@dimen/base_margin</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/primaryText</item>
+    </style>
+    <style name="RecipeStepCardStyle">
+        <item name="android:layout_marginStart">@dimen/card_margin</item>
+        <item name="android:layout_marginLeft">@dimen/card_margin</item>
+        <item name="android:layout_marginRight">@dimen/card_margin</item>
+        <item name="android:layout_marginEnd">@dimen/card_margin</item>
+        <item name="android:layout_marginTop">@dimen/base_margin</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+    <style name="RecipeIngredientTextStyle">
+        <item name="android:layout_marginStart">@dimen/base_margin</item>
+        <item name="android:layout_marginLeft">@dimen/base_margin</item>
+        <item name="android:layout_marginRight">@dimen/base_margin</item>
+        <item name="android:layout_marginEnd">@dimen/base_margin</item>
+        <item name="android:layout_marginTop">@dimen/base_margin</item>
+    </style>
+    <style name="RecipeIngredientTextStyle.Ingredient">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="android:layout_marginBottom">16dp</item>
+    </style>
+    <style name="RecipeIngredientTextStyle.Secondary">
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textColor">@color/secondaryText</item>
+    </style>
 </resources>

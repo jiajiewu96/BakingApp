@@ -12,4 +12,5 @@
     <color name="detailAccentPaneBackground">#455A64</color>
     <color name="detailAccentLabel">#90A4AE</color>
     <color name="activated">#E0E0E0</color>
+    <color name="error">#B71C1C</color>
 </resources>
