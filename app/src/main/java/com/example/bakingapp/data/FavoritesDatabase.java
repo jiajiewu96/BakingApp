@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 
 import com.example.bakingapp.model.Recipe;
 
-@Database(entities = {Recipe.class}, version = 2, exportSchema = false)
+@Database(entities = {Recipe.class}, version = 3, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class FavoritesDatabase extends RoomDatabase {
     private static final Object LOCK = new Object();

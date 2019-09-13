@@ -1,10 +1,5 @@
 package com.example.bakingapp.widget;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Application;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -17,12 +12,16 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.bakingapp.AppExecutors;
 import com.example.bakingapp.BaseApp;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.RecipeRepository;
 import com.example.bakingapp.model.Recipe;
-import com.example.bakingapp.ui.MainActivity;
 import com.example.bakingapp.ui.RecipeActivity;
 import com.example.bakingapp.ui.adapters.RecipeListAdapter;
 import com.example.bakingapp.utils.Consts;
@@ -109,6 +108,7 @@ public class IngredientsWidgetConfigActivity extends AppCompatActivity implement
 
     @Override
     public void onRecipeClick(Recipe recipe) {
+        recipe.setWidget(Consts.FLAG_IS_WIDGET);
         addRecipeToDb(recipe);
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 

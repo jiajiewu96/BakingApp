@@ -7,6 +7,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.bakingapp.utils.Consts;
+
 import java.util.ArrayList;
 
 @Entity(tableName = "recipes")
@@ -19,6 +21,7 @@ public class Recipe implements Parcelable {
     private int servings;
     private String image;
     private int favorite;
+    private int widget = Consts.FLAG_IS_NOT_WIDGET;
 
     @Ignore
     protected Recipe(Parcel in) {
@@ -29,13 +32,15 @@ public class Recipe implements Parcelable {
         servings = in.readInt();
         image = in.readString();
         favorite = in.readInt();
+        widget = in.readInt();
     }
+
     @Ignore
-    public Recipe(){
+    public Recipe() {
 
     }
 
-    public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Step> steps, int servings, String image, int favorite){
+    public Recipe(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Step> steps, int servings, String image, int favorite) {
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
@@ -82,10 +87,20 @@ public class Recipe implements Parcelable {
         return image;
     }
 
-    public int getFavorite(){return favorite;}
+    public int getFavorite() {
+        return favorite;
+    }
 
-    public void setFavorite(int favorite){
+    public void setFavorite(int favorite) {
         this.favorite = favorite;
+    }
+
+    public int getWidget() {
+        return widget;
+    }
+
+    public void setWidget(int widget) {
+        this.widget = widget;
     }
 
     @Override
@@ -104,5 +119,8 @@ public class Recipe implements Parcelable {
         parcel.writeInt(servings);
         parcel.writeString(image);
         parcel.writeInt(favorite);
+        parcel.writeInt(widget);
     }
+
+
 }
