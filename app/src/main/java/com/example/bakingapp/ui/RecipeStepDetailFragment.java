@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -69,6 +70,7 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
     private TextView mLongStepTextView;
     private ImageView mNextButton;
     private ImageView mPreviousButton;
+    private Group mGroup;
 
     OnStepChangeClickListener mCallback;
     private FragmentActivity mActivity;
@@ -153,6 +155,9 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
         mLongStepTextView = (TextView) rootView.findViewById(R.id.tv_step_long);
         mNextButton = (ImageView) rootView.findViewById(R.id.iv_next_step);
         mPreviousButton = (ImageView) rootView.findViewById(R.id.iv_previous_step);
+        if(mActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            mGroup = (Group) rootView.findViewById(R.id.group);
+        }
     }
 
     private void setupStepNavigation() {
@@ -175,12 +180,17 @@ public class RecipeStepDetailFragment extends Fragment implements ExoPlayer.Even
             mLongStepTextView.setText(steps.get(position).getDescription());
             if (TextUtils.isEmpty(steps.get(position).getVideoURL())) {
                 mPlayerView.setVisibility(View.GONE);
+                if(mGroup != null) {
+                    mGroup.setVisibility(View.VISIBLE);
+                }
             } else if (isAdded() && sContext != null) {
                 mPlayerView.setVisibility(View.VISIBLE);
+                if(mGroup != null){
+                    mGroup.setVisibility(View.GONE);
+                }
                 initializeMediaSession();
                 mVideoUri = Uri.parse(steps.get(position).getVideoURL());
                 initializePlayer(mVideoUri);
-
             }
         }
     }
